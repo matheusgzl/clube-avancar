@@ -41,6 +41,7 @@
               "fade-in-up": "fadeInUp 0.8s ease-out forwards",
               "slide-in-right": "slideInRight 0.3s ease-out forwards",
               scroll: "scroll 40s linear infinite",
+              "pulse-slow": "pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite",
             },
             keyframes: {
               fadeInUp: {
@@ -122,6 +123,27 @@
       /* Ensure menu is top */
       #mobile-menu {
         z-index: 100000 !important;
+      }
+
+      /* Sticky CTA pulse */
+      .cta-pulse {
+        box-shadow: 0 0 0 0 rgba(218, 165, 32, 0.7);
+        animation: pulse-gold 2s infinite;
+      }
+
+      @keyframes pulse-gold {
+        0% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(218, 165, 32, 0.7);
+        }
+        70% {
+          transform: scale(1);
+          box-shadow: 0 0 0 10px rgba(218, 165, 32, 0);
+        }
+        100% {
+          transform: scale(0.95);
+          box-shadow: 0 0 0 0 rgba(218, 165, 32, 0);
+        }
       }
     </style>
     <script type="importmap">
@@ -397,7 +419,7 @@
         <div class="container mx-auto">
           <div class="reveal delay-200 max-w-5xl mx-auto">
             <div
-              class="relative aspect-video rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 group cursor-pointer bg-tech-card"
+              class="relative aspect-video rounded-2xl overflow-hidden shadow-[0_0_50px_rgba(0,0,0,0.5)] border border-white/10 group cursor-pointer bg-tech-card mb-8"
             >
               <!-- Placeholder Image -->
               <img
@@ -437,6 +459,18 @@
                 </p>
               </div>
             </div>
+
+            <!-- NEW CTA -->
+            <div class="text-center">
+              <a
+                href="https://wa.me/5519999999999?text=Gostaria%20de%20agendar%20um%20tour."
+                target="_blank"
+                class="inline-flex items-center gap-3 px-8 py-3 border border-gold-500/50 text-gold-500 hover:bg-gold-500 hover:text-tech-dark font-bold rounded-full transition-all uppercase tracking-wide group"
+              >
+                <i data-lucide="map-pin" class="w-5 h-5"></i>
+                Agendar Visita Presencial
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -462,9 +496,25 @@
 
           <div
             id="benefits-grid"
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16"
           >
             <!-- JS Generated -->
+          </div>
+
+          <!-- CTA -->
+          <div class="text-center">
+            <div class="reveal delay-200">
+              <a
+                href="#pricing"
+                class="inline-flex items-center gap-2 px-8 py-4 border border-gold-500 text-gold-500 font-bold rounded-full hover:bg-gold-500 hover:text-tech-dark transition-all uppercase tracking-wide text-sm md:text-base group shadow-[0_0_20px_rgba(218,165,32,0.1)]"
+              >
+                Quero fazer parte do ecossistema
+                <i
+                  data-lucide="arrow-right"
+                  class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                ></i>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -518,7 +568,7 @@
           </div>
 
           <!-- Arena & Lifestyle -->
-          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12">
+          <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 mb-16">
             <div
               class="reveal bg-neutral-900 rounded-3xl overflow-hidden relative group"
             >
@@ -590,6 +640,18 @@
               </div>
             </div>
           </div>
+
+          <!-- CTA -->
+          <div class="text-center">
+            <div class="reveal">
+              <a
+                href="#pricing"
+                class="inline-flex items-center gap-3 px-10 py-5 bg-gradient-to-r from-gold-600 to-gold-400 text-tech-dark font-bold rounded-full hover:shadow-[0_0_25px_rgba(218,165,32,0.5)] transition-all transform hover:-translate-y-1 text-lg uppercase tracking-wide"
+              >
+                Quero elevar o nível do meu negócio
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
@@ -621,10 +683,26 @@
           </div>
 
           <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6"
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6 mb-16"
             id="workshop-grid"
           >
             <!-- JS Generated -->
+          </div>
+
+          <!-- CTA -->
+          <div class="text-center">
+            <div class="reveal">
+              <a
+                href="#pricing"
+                class="inline-flex items-center gap-2 px-8 py-4 border border-gold-500 text-gold-500 font-bold rounded-full hover:bg-gold-500 hover:text-tech-dark transition-all uppercase tracking-wide group"
+              >
+                Participar dos próximos workshops
+                <i
+                  data-lucide="arrow-right"
+                  class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                ></i>
+              </a>
+            </div>
           </div>
         </div>
       </section>
@@ -644,12 +722,25 @@
             </p>
           </div>
 
-          <div class="relative">
+          <div class="relative mb-16">
             <div
               class="absolute left-1/2 transform -translate-x-1/2 w-0.5 h-full bg-gradient-to-b from-transparent via-gold-500/50 to-transparent hidden md:block"
             ></div>
             <div class="space-y-8 md:space-y-0 relative" id="agenda-container">
               <!-- JS Generated -->
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="text-center">
+            <div class="reveal">
+              <a
+                href="#pricing"
+                class="inline-flex items-center gap-2 px-8 py-4 bg-gold-500 text-tech-dark font-bold rounded-full hover:shadow-[0_0_20px_rgba(218,165,32,0.6)] transition-all uppercase tracking-wide hover:-translate-y-0.5"
+              >
+                <i data-lucide="calendar" class="w-5 h-5"></i>
+                Garantir minha presença em 2024
+              </a>
             </div>
           </div>
         </div>
@@ -671,7 +762,7 @@
           </div>
 
           <!-- Gallery Carousel -->
-          <div class="relative" id="gallery-carousel">
+          <div class="relative mb-16" id="gallery-carousel">
             <div class="overflow-hidden px-1 -mx-1 py-4">
               <div
                 id="gallery-track"
@@ -684,6 +775,23 @@
             <!-- Dots -->
             <div class="flex justify-center gap-2 mt-8" id="gallery-dots">
               <!-- JS Generated -->
+            </div>
+          </div>
+
+          <!-- CTA -->
+          <div class="text-center">
+            <div class="reveal delay-200">
+              <a
+                href="https://wa.me/5519999999999?text=Olá, gostaria de agendar uma visita guiada no Hub."
+                target="_blank"
+                class="inline-flex items-center gap-2 px-8 py-4 border border-white/20 text-white font-bold rounded-full hover:bg-white hover:text-tech-dark transition-all uppercase tracking-wide backdrop-blur-sm group"
+              >
+                Agendar Visita Guiada
+                <i
+                  data-lucide="arrow-right"
+                  class="w-5 h-5 transform group-hover:translate-x-1 transition-transform"
+                ></i>
+              </a>
             </div>
           </div>
         </div>
@@ -723,7 +831,7 @@
         </div>
       </section>
 
-      <!-- Testimonials (Updated to Marquee) -->
+      <!-- Testimonials (Marquee) -->
       <section
         id="testimonials"
         class="py-24 bg-tech-dark relative overflow-hidden"
@@ -744,13 +852,24 @@
         </div>
 
         <!-- Marquee Container -->
-        <div class="relative w-full overflow-hidden group">
+        <div class="relative w-full overflow-hidden group mb-12">
           <div
             id="testimonial-track"
             class="flex gap-6 animate-scroll hover:[animation-play-state:paused] w-max"
           >
             <!-- JS Generated -->
           </div>
+        </div>
+
+        <!-- NEW CTA -->
+        <div class="text-center relative z-30">
+          <a
+            href="#pricing"
+            class="inline-flex items-center gap-2 px-8 py-3 bg-white/5 border border-white/10 text-white hover:bg-gold-500 hover:text-tech-dark hover:border-gold-500 font-bold rounded-full transition-all uppercase tracking-wide group"
+          >
+            Junte-se a esses líderes
+            <i data-lucide="star" class="w-4 h-4 fill-current"></i>
+          </a>
         </div>
       </section>
 
@@ -889,6 +1008,18 @@
     <!-- Footer -->
     <footer class="bg-black pt-20 pb-10 border-t border-white/10">
       <div class="container mx-auto px-6">
+        <div class="text-center mb-12">
+          <h2 class="text-2xl font-bold text-white mb-6">
+            Pronto para o próximo nível?
+          </h2>
+          <a
+            href="#pricing"
+            class="inline-block px-12 py-4 bg-gold-500 hover:bg-gold-400 text-tech-dark font-bold rounded-full transition-all uppercase tracking-wide shadow-lg hover:shadow-gold-500/40 transform hover:-translate-y-1"
+          >
+            Inscrever-se Agora
+          </a>
+        </div>
+
         <div
           class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16"
         >
@@ -987,17 +1118,21 @@
         </div>
       </div>
 
-      <a
-        href="https://wa.me/5519999999999"
-        target="_blank"
-        class="fixed bottom-6 right-6 z-50 bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-[0_0_20px_rgba(34,197,94,0.4)] transition-all hover:-translate-y-1 group"
-      >
-        <i data-lucide="message-circle" class="w-8 h-8"></i>
-        <span
-          class="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-white text-slate-900 text-xs font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
-          >Fale Conosco</span
+      <!-- Sticky CTAs -->
+      <div class="fixed bottom-6 right-6 z-50 flex flex-col gap-4 items-end">
+        <!-- WhatsApp Button -->
+        <a
+          href="https://wa.me/5519999999999"
+          target="_blank"
+          class="bg-green-500 hover:bg-green-600 text-white p-4 rounded-full shadow-[0_0_20px_rgba(34,197,94,0.4)] transition-all hover:-translate-y-1 group relative"
         >
-      </a>
+          <i data-lucide="message-circle" class="w-8 h-8"></i>
+          <span
+            class="absolute right-full mr-4 top-1/2 -translate-y-1/2 px-3 py-1 bg-white text-slate-900 text-xs font-bold rounded opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap"
+            >Fale Conosco</span
+          >
+        </a>
+      </div>
     </footer>
 
     <!-- Lightbox Modal -->
