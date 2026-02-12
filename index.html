@@ -40,6 +40,7 @@
             animation: {
               "fade-in-up": "fadeInUp 0.8s ease-out forwards",
               "slide-in-right": "slideInRight 0.3s ease-out forwards",
+              scroll: "scroll 40s linear infinite",
             },
             keyframes: {
               fadeInUp: {
@@ -49,6 +50,10 @@
               slideInRight: {
                 "0%": { transform: "translateX(100%)" },
                 "100%": { transform: "translateX(0)" },
+              },
+              scroll: {
+                "0%": { transform: "translateX(0)" },
+                "100%": { transform: "translateX(-50%)" },
               },
             },
           },
@@ -718,13 +723,17 @@
         </div>
       </section>
 
-      <!-- Testimonials -->
+      <!-- Testimonials (Updated to Marquee) -->
       <section
         id="testimonials"
         class="py-24 bg-tech-dark relative overflow-hidden"
       >
-        <div class="container mx-auto px-6 relative z-10">
-          <div class="reveal text-center mb-16">
+        <div
+          class="absolute inset-0 bg-gradient-to-r from-tech-dark via-transparent to-tech-dark z-20 pointer-events-none"
+        ></div>
+
+        <div class="container mx-auto px-6 relative z-10 mb-12">
+          <div class="reveal text-center">
             <h2
               class="text-3xl md:text-5xl font-heading font-bold text-white mb-6"
             >
@@ -732,19 +741,15 @@
             </h2>
             <div class="h-1.5 w-24 bg-gold-500 mx-auto rounded-full"></div>
           </div>
+        </div>
 
-          <div class="relative" id="testimonial-carousel">
-            <div class="overflow-hidden px-1 -mx-1 py-4">
-              <div
-                id="testimonial-track"
-                class="flex transition-transform duration-700 ease-in-out will-change-transform"
-              >
-                <!-- JS Generated -->
-              </div>
-            </div>
-            <div class="flex justify-center gap-2 mt-8" id="testimonial-dots">
-              <!-- JS Generated -->
-            </div>
+        <!-- Marquee Container -->
+        <div class="relative w-full overflow-hidden group">
+          <div
+            id="testimonial-track"
+            class="flex gap-6 animate-scroll hover:[animation-play-state:paused] w-max"
+          >
+            <!-- JS Generated -->
           </div>
         </div>
       </section>
@@ -1465,57 +1470,45 @@
         }
       }
 
-      // Testimonial Logic
-      let currentTestimonialIndex = 0;
-      let testimonialsPerPage = 1;
-
-      function updateTestimonialView() {
-        const track = document.getElementById("testimonial-track");
-        const itemWidth = 100 / testimonialsPerPage;
-        track.style.transform = `translateX(-${currentTestimonialIndex * itemWidth}%)`;
-
-        // Update dots
-        const dotsContainer = document.getElementById("testimonial-dots");
-        const totalDots = testimonials.length;
-        dotsContainer.innerHTML = Array.from({ length: totalDots })
-          .map(
-            (_, i) => `
-                <button onclick="goToTestimonial(${i})" class="h-1.5 rounded-full transition-all duration-300 ${i === currentTestimonialIndex % testimonials.length ? "w-8 bg-gold-500" : "w-2 bg-white/20 hover:bg-white/40"}"></button>
-            `,
-          )
-          .join("");
-      }
-
-      function goToTestimonial(index) {
-        currentTestimonialIndex = index;
-        updateTestimonialView();
-      }
-
+      // Marquee Testimonials
       function renderTestimonials() {
         const track = document.getElementById("testimonial-track");
-        // Duplicate array for potential infinite loop illusion, though simple slider here
-        const displayItems = [...testimonials, ...testimonials];
+        // Duplicate list 4 times for smooth infinite scroll
+        const displayItems = [
+          ...testimonials,
+          ...testimonials,
+          ...testimonials,
+          ...testimonials,
+        ];
 
         track.innerHTML = displayItems
           .map(
             (t) => `
-                <div class="flex-shrink-0 px-4" style="width: ${100 / testimonialsPerPage}%">
-                    <div class="bg-[#131728] border border-white/5 p-8 rounded-2xl relative h-full flex flex-col justify-between hover:border-gold-500/30 transition-all duration-300 hover:-translate-y-1 shadow-lg">
+                <div class="w-[400px] shrink-0">
+                    <div class="bg-[#131728] border border-white/5 hover:border-gold-500/30 p-8 rounded-2xl relative h-full flex flex-col justify-between transition-all duration-300 hover:bg-white/[0.02] group shadow-xl">
+                        
+                        <!-- Top: Rating & Quote -->
                         <div>
-                            <div class="flex items-center gap-4 mb-6">
-                                <div class="relative shrink-0">
-                                    <div class="w-14 h-14 rounded-full border-2 border-gold-500 p-0.5">
-                                        <img src="${t.image}" alt="${t.name}" class="w-full h-full rounded-full object-cover"/>
-                                    </div>
-                                </div>
-                                <div>
-                                    <h4 class="font-bold text-white text-lg leading-tight">${t.name}</h4>
-                                    <p class="text-sm text-slate-400 font-medium">${t.role}</p>
-                                </div>
+                             <div class="flex gap-1 mb-4">
+                                <i data-lucide="star" class="w-4 h-4 fill-gold-500 text-gold-500"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-gold-500 text-gold-500"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-gold-500 text-gold-500"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-gold-500 text-gold-500"></i>
+                                <i data-lucide="star" class="w-4 h-4 fill-gold-500 text-gold-500"></i>
+                             </div>
+                             <div class="mb-6 relative">
+                                 <p class="text-slate-200 text-lg leading-relaxed relative z-10 font-light">"${t.quote}"</p>
                             </div>
-                            <div class="relative flex gap-2">
-                                <i data-lucide="quote" class="text-gold-500/40 w-8 h-8 shrink-0 fill-gold-500/10 -mt-2"></i>
-                                <p class="text-slate-300 italic text-lg leading-relaxed">"${t.quote}"</p>
+                        </div>
+
+                        <!-- Bottom: Profile -->
+                        <div class="flex items-center gap-4 pt-6 border-t border-white/5">
+                            <div class="w-12 h-12 rounded-full border border-gold-500/30 p-0.5 shrink-0 group-hover:border-gold-500 transition-colors">
+                                <img src="${t.image}" alt="${t.name}" class="w-full h-full rounded-full object-cover"/>
+                            </div>
+                            <div>
+                                <h4 class="font-bold text-white text-base">${t.name}</h4>
+                                <p class="text-xs text-gold-500 uppercase tracking-wider font-bold">${t.role}</p>
                             </div>
                         </div>
                     </div>
@@ -1523,16 +1516,9 @@
             `,
           )
           .join("");
-
-        updateTestimonialView();
       }
 
       function handleResize() {
-        if (window.innerWidth >= 1024) testimonialsPerPage = 3;
-        else if (window.innerWidth >= 768) testimonialsPerPage = 2;
-        else testimonialsPerPage = 1;
-        renderTestimonials();
-
         // Gallery Resize - ALWAYS 1 per page now
         galleryPerPage = 1;
         renderGallery();
@@ -1548,6 +1534,7 @@
         renderAgenda();
         renderBenefitsList("monthly-benefits");
         renderBenefitsList("annual-benefits");
+        renderTestimonials(); // Now renders Marquee
 
         // Initial Renders dependent on resize
         handleResize();
@@ -1664,13 +1651,6 @@
         document
           .querySelectorAll(".reveal")
           .forEach((el) => observer.observe(el));
-
-        // Auto Play Testimonials
-        setInterval(() => {
-          currentTestimonialIndex =
-            (currentTestimonialIndex + 1) % testimonials.length;
-          updateTestimonialView();
-        }, 4000);
 
         // Auto Play Gallery
         setInterval(() => {
