@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="pt-BR" class="scroll-smooth">
+<html lang="pt-BR" class="scroll-smooth overflow-x-hidden w-full">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -129,8 +129,10 @@
       }
     </script>
   </head>
-  <body class="bg-tech-dark text-slate-200 antialiased overflow-x-hidden">
-    <!-- Navbar -->
+  <body
+    class="bg-tech-dark text-slate-200 antialiased overflow-x-hidden w-full"
+  >
+    <!-- Navbar HTML Structure -->
     <nav
       id="navbar"
       class="fixed w-full transition-all duration-300 bg-transparent py-4 z-[9999]"
@@ -146,47 +148,48 @@
           CLUBE <span class="text-gold-500">AVANÇAR</span>
         </a>
 
-        <!-- Desktop Menu -->
-        <div class="hidden md:flex items-center space-x-4 lg:space-x-8">
+        <!-- Desktop Menu (Hidden on Mobile/Tablets, Visible on Large Screens) -->
+        <div class="hidden lg:flex items-center space-x-4 lg:space-x-8">
           <a
             href="#concept"
-            class="text-xs lg:text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
+            class="text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
             >O Clube</a
           >
           <a
             href="#workshops"
-            class="text-xs lg:text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
+            class="text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
             >Workshops</a
           >
           <a
             href="#agenda"
-            class="text-xs lg:text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
+            class="text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
             >Agenda</a
           >
           <a
             href="#testimonials"
-            class="text-xs lg:text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
+            class="text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
             >Depoimentos</a
           >
           <a
             href="#pricing"
-            class="text-xs lg:text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
+            class="text-sm font-bold text-slate-300 hover:text-gold-400 transition-colors uppercase tracking-wide"
             >Planos</a
           >
 
           <a
             href="#pricing"
-            class="px-4 lg:px-6 py-2 text-xs lg:text-sm bg-gradient-to-r from-gold-600 to-gold-400 text-tech-dark font-bold rounded-full hover:shadow-[0_0_15px_rgba(218,165,32,0.5)] transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
+            class="px-6 py-2 text-sm bg-gradient-to-r from-gold-600 to-gold-400 text-tech-dark font-bold rounded-full hover:shadow-[0_0_15px_rgba(218,165,32,0.5)] transition-all transform hover:-translate-y-0.5 whitespace-nowrap"
           >
             Entrar Agora
           </a>
         </div>
 
-        <!-- Mobile Toggle Button -->
+        <!-- Mobile Toggle Button (Visible on Mobile/Tablets) -->
         <button
           id="menu-toggle"
-          class="md:hidden text-white focus:outline-none p-2 relative z-50"
+          class="lg:hidden text-white focus:outline-none p-2 relative z-50"
           aria-label="Toggle menu"
+          aria-expanded="false"
         >
           <i
             data-lucide="menu"
@@ -202,12 +205,12 @@
       </div>
     </nav>
 
-    <!-- Mobile Menu Overlay (Moved outside nav for stacking context fix) -->
+    <!-- Mobile Menu Overlay (Outside nav to fix stacking contexts) -->
     <div id="mobile-menu" class="fixed inset-0 hidden justify-end z-[100000]">
       <!-- Backdrop -->
       <div
         id="mobile-backdrop"
-        class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300"
+        class="absolute inset-0 bg-black/60 backdrop-blur-sm opacity-0 transition-opacity duration-300 cursor-pointer"
       ></div>
 
       <!-- Drawer -->
@@ -231,6 +234,7 @@
           <button
             id="drawer-close"
             class="text-slate-400 hover:text-white transition-colors focus:outline-none p-1"
+            aria-label="Fechar menu"
           >
             <i data-lucide="x" class="w-6 h-6"></i>
           </button>
@@ -294,7 +298,7 @@
         <div class="px-6 z-10 mt-auto mb-8">
           <a
             href="#pricing"
-            class="flex items-center justify-center w-full py-4 bg-gold-500 hover:bg-gold-400 text-tech-dark font-bold text-base rounded-lg shadow-lg hover:shadow-gold-500/20 transition-all uppercase tracking-wide"
+            class="mobile-link flex items-center justify-center w-full py-4 bg-gold-500 hover:bg-gold-400 text-tech-dark font-bold text-base rounded-lg shadow-lg hover:shadow-gold-500/20 transition-all uppercase tracking-wide"
           >
             Quero fazer parte
           </a>
@@ -1430,9 +1434,22 @@
         // Icons
         lucide.createIcons();
 
-        // Navbar Scroll Effect
+        // ==========================================
+        // Navbar & Scroll Logic (Vanilla JS)
+        // ==========================================
         const navbar = document.getElementById("navbar");
-        window.addEventListener("scroll", () => {
+        const menuToggle = document.getElementById("menu-toggle");
+        const mobileMenu = document.getElementById("mobile-menu");
+        const mobileBackdrop = document.getElementById("mobile-backdrop");
+        const mobileDrawer = document.getElementById("mobile-drawer");
+        const iconMenu = document.getElementById("icon-menu");
+        const iconClose = document.getElementById("icon-close");
+        const drawerClose = document.getElementById("drawer-close");
+        const mobileLinks = document.querySelectorAll(".mobile-link");
+        let isMenuOpen = false;
+
+        // Scroll Handling
+        function handleScroll() {
           if (window.scrollY > 50) {
             navbar.classList.add(
               "bg-tech-dark/90",
@@ -1440,9 +1457,9 @@
               "shadow-lg",
               "border-b",
               "border-white/5",
+              "py-3",
             );
             navbar.classList.remove("bg-transparent", "py-4");
-            navbar.classList.add("py-3");
           } else {
             navbar.classList.remove(
               "bg-tech-dark/90",
@@ -1454,51 +1471,62 @@
             );
             navbar.classList.add("bg-transparent", "py-4");
           }
-        });
+        }
+        window.addEventListener("scroll", handleScroll);
+        handleScroll(); // Initial check
 
-        // Mobile Menu Logic
-        const menuToggle = document.getElementById("menu-toggle");
-        const mobileMenu = document.getElementById("mobile-menu");
-        const mobileBackdrop = document.getElementById("mobile-backdrop");
-        const mobileDrawer = document.getElementById("mobile-drawer");
-        const iconMenu = document.getElementById("icon-menu");
-        const iconClose = document.getElementById("icon-close");
-        const drawerClose = document.getElementById("drawer-close");
-        const mobileLinks = document.querySelectorAll(".mobile-link");
-        let isMenuOpen = false;
-
+        // Toggle Function
         function toggleMenu() {
           isMenuOpen = !isMenuOpen;
+          menuToggle.setAttribute("aria-expanded", isMenuOpen);
+
           if (isMenuOpen) {
             mobileMenu.classList.remove("hidden");
             mobileMenu.classList.add("flex");
-            // Small delay for transition
-            setTimeout(() => {
+            // Small delay to allow display:flex to apply before transition
+            requestAnimationFrame(() => {
               mobileBackdrop.classList.remove("opacity-0");
               mobileDrawer.classList.remove("translate-x-full");
               iconMenu.classList.add("opacity-0");
               iconClose.classList.remove("opacity-0");
-            }, 10);
+            });
             document.body.style.overflow = "hidden";
           } else {
             mobileBackdrop.classList.add("opacity-0");
             mobileDrawer.classList.add("translate-x-full");
             iconMenu.classList.remove("opacity-0");
             iconClose.classList.add("opacity-0");
+
+            // Wait for transition to finish before hiding
             setTimeout(() => {
               mobileMenu.classList.add("hidden");
               mobileMenu.classList.remove("flex");
             }, 300);
-            document.body.style.overflow = "unset";
+            document.body.style.overflow = "";
           }
         }
 
+        // Event Listeners
         menuToggle.addEventListener("click", toggleMenu);
         if (drawerClose) drawerClose.addEventListener("click", toggleMenu);
         mobileBackdrop.addEventListener("click", toggleMenu);
         mobileLinks.forEach((link) =>
           link.addEventListener("click", toggleMenu),
         );
+
+        // Close on Escape Key
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape" && isMenuOpen) toggleMenu();
+        });
+
+        // Close on Resize (if switching to desktop view)
+        window.addEventListener("resize", () => {
+          if (window.innerWidth >= 1024 && isMenuOpen) {
+            toggleMenu();
+          }
+          handleResize(); // Also handle testimonial resize
+        });
+        // ==========================================
 
         // Reveal Animation Observer
         const observer = new IntersectionObserver(
@@ -1522,8 +1550,6 @@
             (currentTestimonialIndex + 1) % testimonials.length;
           updateTestimonialView();
         }, 4000);
-
-        window.addEventListener("resize", handleResize);
       });
     </script>
   </body>
