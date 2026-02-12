@@ -651,8 +651,8 @@
       </section>
 
       <!-- Gallery -->
-      <section id="gallery" class="py-24 bg-tech-dark relative">
-        <div class="container mx-auto px-6">
+      <section id="gallery" class="py-24 bg-tech-dark relative overflow-hidden">
+        <div class="container mx-auto px-6 relative z-10">
           <div class="reveal text-center mb-16">
             <h2
               class="text-3xl md:text-5xl font-heading font-bold text-white mb-4"
@@ -664,11 +664,22 @@
               sua produtividade e criatividade.
             </p>
           </div>
-          <div
-            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
-            id="gallery-grid"
-          >
-            <!-- JS Generated -->
+
+          <!-- Gallery Carousel -->
+          <div class="relative" id="gallery-carousel">
+            <div class="overflow-hidden px-1 -mx-1 py-4">
+              <div
+                id="gallery-track"
+                class="flex transition-transform duration-700 ease-in-out will-change-transform"
+              >
+                <!-- JS Generated -->
+              </div>
+            </div>
+
+            <!-- Dots -->
+            <div class="flex justify-center gap-2 mt-8" id="gallery-dots">
+              <!-- JS Generated -->
+            </div>
           </div>
         </div>
       </section>
@@ -983,6 +994,25 @@
         >
       </a>
     </footer>
+
+    <!-- Lightbox Modal -->
+    <div
+      id="lightbox-modal"
+      class="fixed inset-0 z-[100001] bg-black/95 hidden flex justify-center items-center opacity-0 transition-opacity duration-300"
+    >
+      <button
+        id="lightbox-close"
+        class="absolute top-6 right-6 text-white hover:text-gold-500 transition-colors z-50"
+      >
+        <i data-lucide="x" class="w-10 h-10"></i>
+      </button>
+      <img
+        id="lightbox-image"
+        src=""
+        alt="Full Screen"
+        class="max-w-[90vw] max-h-[90vh] object-contain rounded-lg shadow-2xl transform scale-95 transition-transform duration-300"
+      />
+    </div>
 
     <!-- Logic -->
     <script>
@@ -1353,25 +1383,59 @@
           .join("");
       }
 
+      // ==========================================
+      // Gallery Carousel Logic
+      // ==========================================
+      let currentGalleryIndex = 0;
+      let galleryPerPage = 1;
+
+      function updateGalleryView() {
+        const track = document.getElementById("gallery-track");
+        const itemWidth = 100 / galleryPerPage;
+        track.style.transform = `translateX(-${currentGalleryIndex * itemWidth}%)`;
+
+        // Update dots
+        const dotsContainer = document.getElementById("gallery-dots");
+        dotsContainer.innerHTML = gallery
+          .map(
+            (_, i) => `
+                <button onclick="goToGallery(${i})" class="h-1.5 rounded-full transition-all duration-300 ${i === currentGalleryIndex % gallery.length ? "w-8 bg-gold-500" : "w-2 bg-white/20 hover:bg-white/40"}"></button>
+            `,
+          )
+          .join("");
+      }
+
+      function goToGallery(index) {
+        currentGalleryIndex = index;
+        updateGalleryView();
+      }
+
       function renderGallery() {
-        const container = document.getElementById("gallery-grid");
-        container.innerHTML = gallery
+        const track = document.getElementById("gallery-track");
+        // Duplicate array for potential infinite loop illusion
+        const displayItems = [...gallery, ...gallery];
+
+        track.innerHTML = displayItems
           .map(
             (img) => `
-                <div class="reveal group relative overflow-hidden rounded-xl aspect-[4/3] cursor-pointer">
-                    <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
-                    <img src="${img.url}" alt="${img.title}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out" />
-                    <div class="absolute inset-0 bg-gradient-to-t from-tech-dark/90 via-tech-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-end p-6">
-                        <span class="text-gold-500 text-xs font-bold uppercase tracking-wider mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">${img.cat}</span>
-                        <h4 class="text-white font-bold text-xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${img.title}</h4>
-                    </div>
-                    <div class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
-                         <div class="bg-white/10 backdrop-blur-md p-2 rounded-full text-white"><i data-lucide="maximize-2" class="w-4.5 h-4.5"></i></div>
+                <div class="flex-shrink-0 px-0 flex justify-center items-center" style="width: 100%">
+                    <div class="w-[80%] group relative overflow-hidden rounded-xl aspect-video cursor-pointer shadow-lg border border-white/5 hover:border-gold-500/30 transition-colors" onclick="openLightbox('${img.url}')">
+                        <div class="absolute inset-0 bg-black/20 group-hover:bg-black/0 transition-colors z-10"></div>
+                        <img src="${img.url}" alt="${img.title}" class="w-full h-full object-cover transform group-hover:scale-110 transition-transform duration-700 ease-in-out" />
+                        <div class="absolute inset-0 bg-gradient-to-t from-tech-dark/90 via-tech-dark/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300 z-20 flex flex-col justify-end p-6">
+                            <span class="text-gold-500 text-xs font-bold uppercase tracking-wider mb-1 transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300 delay-75">${img.cat}</span>
+                            <h4 class="text-white font-bold text-xl md:text-3xl transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">${img.title}</h4>
+                        </div>
+                        <div class="absolute top-4 right-4 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-300 delay-100">
+                             <div class="bg-white/10 backdrop-blur-md p-2 rounded-full text-white"><i data-lucide="maximize-2" class="w-6 h-6"></i></div>
+                        </div>
                     </div>
                 </div>
             `,
           )
           .join("");
+
+        updateGalleryView();
       }
 
       function renderBenefitsList(id) {
@@ -1467,9 +1531,11 @@
         if (window.innerWidth >= 1024) testimonialsPerPage = 3;
         else if (window.innerWidth >= 768) testimonialsPerPage = 2;
         else testimonialsPerPage = 1;
-
-        // Re-render to update widths
         renderTestimonials();
+
+        // Gallery Resize - ALWAYS 1 per page now
+        galleryPerPage = 1;
+        renderGallery();
       }
 
       // Init
@@ -1480,9 +1546,10 @@
         renderLifestyle();
         renderWorkshops();
         renderAgenda();
-        renderGallery();
         renderBenefitsList("monthly-benefits");
         renderBenefitsList("annual-benefits");
+
+        // Initial Renders dependent on resize
         handleResize();
 
         // Icons
@@ -1578,7 +1645,7 @@
           if (window.innerWidth >= 1024 && isMenuOpen) {
             toggleMenu();
           }
-          handleResize(); // Also handle testimonial resize
+          handleResize(); // Also handle testimonial & gallery resize
         });
         // ==========================================
 
@@ -1604,6 +1671,62 @@
             (currentTestimonialIndex + 1) % testimonials.length;
           updateTestimonialView();
         }, 4000);
+
+        // Auto Play Gallery
+        setInterval(() => {
+          currentGalleryIndex = (currentGalleryIndex + 1) % gallery.length;
+          updateGalleryView();
+        }, 4000);
+
+        // ==========================================
+        // Lightbox Logic
+        // ==========================================
+        const lightboxModal = document.getElementById("lightbox-modal");
+        const lightboxImage = document.getElementById("lightbox-image");
+        const lightboxClose = document.getElementById("lightbox-close");
+
+        window.openLightbox = (url) => {
+          if (!lightboxModal || !lightboxImage) return;
+          lightboxImage.src = url;
+          lightboxModal.classList.remove("hidden");
+          // Small delay to allow display:flex to apply before opacity transition
+          requestAnimationFrame(() => {
+            lightboxModal.classList.remove("opacity-0");
+            lightboxImage.classList.remove("scale-95");
+            lightboxImage.classList.add("scale-100");
+          });
+          document.body.style.overflow = "hidden";
+        };
+
+        window.closeLightbox = () => {
+          if (!lightboxModal || !lightboxImage) return;
+          lightboxModal.classList.add("opacity-0");
+          lightboxImage.classList.remove("scale-100");
+          lightboxImage.classList.add("scale-95");
+
+          setTimeout(() => {
+            lightboxModal.classList.add("hidden");
+            lightboxImage.src = "";
+          }, 300);
+          document.body.style.overflow = "";
+        };
+
+        if (lightboxClose)
+          lightboxClose.addEventListener("click", window.closeLightbox);
+        if (lightboxModal) {
+          lightboxModal.addEventListener("click", (e) => {
+            if (e.target === lightboxModal) window.closeLightbox();
+          });
+        }
+        document.addEventListener("keydown", (e) => {
+          if (
+            e.key === "Escape" &&
+            lightboxModal &&
+            !lightboxModal.classList.contains("hidden")
+          ) {
+            window.closeLightbox();
+          }
+        });
       });
     </script>
   </body>
