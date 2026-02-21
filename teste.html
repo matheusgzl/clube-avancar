@@ -1,1220 +1,2677 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Clube Avançar | Networking e Crescimento</title>
 
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Clube Avançar | Networking e Crescimento</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
 
-  <!-- Tailwind CSS -->
-  <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
 
-  <!-- Fonts -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@600;700&display=swap"
-    rel="stylesheet">
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
 
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
 
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          colors: {
-            brand: {
-              dark: '#0A0A0A',
-              darker: '#000000',
-              card: '#121212',
-              gold: '#D4AF37',
-              goldLight: '#F3E5AB',
-              goldDark: '#AA8C2C',
-            }
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            colors: {
+              brand: {
+                dark: "#0A0A0A",
+                darker: "#000000",
+                card: "#121212",
+                gold: "#D4AF37",
+                goldLight: "#F3E5AB",
+                goldDark: "#AA8C2C",
+              },
+            },
+            fontFamily: {
+              sans: ["Inter", "sans-serif"],
+              serif: ["Playfair Display", "serif"],
+            },
           },
-          fontFamily: {
-            sans: ['Inter', 'sans-serif'],
-            serif: ['Playfair Display', 'serif'],
-          }
+        },
+      };
+    </script>
+    <style>
+      body {
+        background-color: #000000;
+        color: #f3f4f6;
+        overflow-x: hidden;
+        font-family: "Inter", sans-serif;
+      }
+
+      /* Custom Scrollbar */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #000000;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1a1a1a;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #d4af37;
+      }
+
+      /* Utilities */
+      .mask-fade-bottom {
+        mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
+        -webkit-mask-image: linear-gradient(
+          to bottom,
+          black 85%,
+          transparent 100%
+        );
+      }
+
+      /* Animation Classes */
+      .reveal {
+        opacity: 0;
+        transform: translateY(50px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+      .reveal.active {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      .reveal-left {
+        opacity: 0;
+        transform: translateX(-50px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+      .reveal-left.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      .reveal-right {
+        opacity: 0;
+        transform: translateX(50px);
+        transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
+      }
+      .reveal-right.active {
+        opacity: 1;
+        transform: translateX(0);
+      }
+
+      /* Hero Initial States for GSAP to prevent FOUC */
+      @media (min-width: 1024px) {
+        .hero-image-wrapper {
+          opacity: 0;
+          visibility: hidden;
+          transform: translateX(-100px);
+          will-change: transform, opacity;
+        }
+        .hero-title-wrapper {
+          will-change: transform;
         }
       }
-    }
-  </script>
-  <style>
-    body {
-      background-color: #000000;
-      color: #F3F4F6;
-      overflow-x: hidden;
-      font-family: 'Inter', sans-serif;
-    }
 
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-
-    ::-webkit-scrollbar-track {
-      background: #000000;
-    }
-
-    ::-webkit-scrollbar-thumb {
-      background: #1A1A1A;
-      border-radius: 4px;
-    }
-
-    ::-webkit-scrollbar-thumb:hover {
-      background: #D4AF37;
-    }
-
-    /* Utilities */
-    .mask-fade-bottom {
-      mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-      -webkit-mask-image: linear-gradient(to bottom, black 85%, transparent 100%);
-    }
-
-    /* Animation Classes */
-    .reveal {
-      opacity: 0;
-      transform: translateY(50px);
-      transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
-    }
-
-    .reveal.active {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    .reveal-left {
-      opacity: 0;
-      transform: translateX(-50px);
-      transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
-    }
-
-    .reveal-left.active {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    .reveal-right {
-      opacity: 0;
-      transform: translateX(50px);
-      transition: all 0.8s cubic-bezier(0.17, 0.55, 0.55, 1);
-    }
-
-    .reveal-right.active {
-      opacity: 1;
-      transform: translateX(0);
-    }
-
-    /* Hero Animation - Desktop Only */
-    @media (min-width: 1024px) {
-      .hero-section {
-        --scroll-prog: 0;
-      }
-
-      .hero-title-wrapper {
-        /* Starts at 100%, shrinks to 55% based on scroll to give more space to text */
-        flex-basis: calc(100% - (45% * var(--scroll-prog)));
-        max-width: calc(100% - (45% * var(--scroll-prog)));
-        display: flex;
-        justify-content: center;
-        /* Smooth out the scroll updates with a longer duration and ease-out */
-        transition: flex-basis 0.6s cubic-bezier(0.16, 1, 0.3, 1), max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1);
-      }
-
-      .hero-title-content {
-        text-align: center;
-      }
-
-      /* Dynamic Font Size Scaling */
-      .hero-title-content h1 {
-        /* Scales from 5.5rem down to 4rem as scroll progresses */
-        font-size: calc(5.5rem - (1.5rem * var(--scroll-prog)));
-        transition: font-size 0.1s linear;
-      }
-
-      .hero-image-wrapper {
-        /* Starts at 0%, grows to 45% */
-        flex-basis: calc(45% * var(--scroll-prog));
-        max-width: calc(45% * var(--scroll-prog));
-        opacity: var(--scroll-prog);
+      /* Accordion Transition */
+      .accordion-content {
+        transition:
+          max-height 0.3s ease-out,
+          opacity 0.3s ease-out;
+        max-height: 0;
+        opacity: 0;
         overflow: hidden;
-        /* Slide in from the left side */
-        transform: translateX(calc(-100px * (1 - var(--scroll-prog))));
-        transition: flex-basis 0.6s cubic-bezier(0.16, 1, 0.3, 1), max-width 0.6s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.6s ease-out, transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
       }
-    }
+      .accordion-content.open {
+        max-height: 200px; /* Arbitrary large height */
+        opacity: 1;
+      }
 
-    /* Accordion Transition */
-    .accordion-content {
-      transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
-      max-height: 0;
-      opacity: 0;
-      overflow: hidden;
-    }
-
-    .accordion-content.open {
-      max-height: 200px;
-      /* Arbitrary large height */
-      opacity: 1;
-    }
-
-    /* Tooltip */
-    .tooltip {
-      visibility: hidden;
-      opacity: 0;
-      transition: opacity 0.2s;
-    }
-
-    .tooltip.show {
-      visibility: visible;
-      opacity: 1;
-    }
-  </style>
-</head>
-
-<body class="bg-brand-dark min-h-screen text-gray-200 selection:bg-brand-gold selection:text-brand-darker relative">
-
-  <!-- GLOBAL EFFECTS LAYER -->
-  <!-- 1. Global Noise Texture -->
-  <div class="fixed inset-0 z-[60] pointer-events-none opacity-[0.04] mix-blend-overlay"
-    style="background-image: url('data:image/svg+xml,%3Csvg viewBox=\'0 0 200 200\' xmlns=\'http://www.w3.org/2000/svg\'%3E%3Cfilter id=\'noiseFilter\'%3E%3CfeTurbulence type=\'fractalNoise\' baseFrequency=\'0.65\' numOctaves=\'3\' stitchTiles=\'stitch\'/%3E%3C/filter%3E%3Crect width=\'100%25\' height=\'100%25\' filter=\'url(%23noiseFilter)\'/%3E%3C/svg%3E')">
-  </div>
-
-  <!-- 2. Global Ambient Lighting -->
-  <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      /* Tooltip */
+      .tooltip {
+        visibility: hidden;
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .tooltip.show {
+        visibility: visible;
+        opacity: 1;
+      }
+    </style>
+  </head>
+  <body
+    class="bg-brand-dark min-h-screen text-gray-200 selection:bg-brand-gold selection:text-brand-darker relative"
+  >
+    <!-- GLOBAL EFFECTS LAYER -->
+    <!-- 1. Global Noise Texture -->
     <div
-      class="absolute -top-[10%] -left-[10%] w-[70vw] h-[70vw] bg-brand-gold/5 rounded-full blur-[150px] opacity-40 animate-pulse"
-      style="animation-duration: 8s"></div>
-    <div class="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-[#1a1a2e] rounded-full blur-[150px] opacity-60">
+      class="fixed inset-0 z-[60] pointer-events-none opacity-[0.04] mix-blend-overlay"
+      style="
+        background-image: url(&quot;data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E&quot;);
+      "
+    ></div>
+
+    <!-- 2. Global Ambient Lighting -->
+    <div class="fixed inset-0 z-0 pointer-events-none overflow-hidden">
+      <div
+        class="absolute -top-[10%] -left-[10%] w-[70vw] h-[70vw] bg-brand-gold/5 rounded-full blur-[150px] opacity-40 animate-pulse"
+        style="animation-duration: 8s"
+      ></div>
+      <div
+        class="absolute top-[40%] -right-[10%] w-[60vw] h-[60vw] bg-[#1a1a2e] rounded-full blur-[150px] opacity-60"
+      ></div>
+      <div
+        class="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] bg-brand-gold/5 rounded-full blur-[120px] opacity-30"
+      ></div>
     </div>
-    <div
-      class="absolute -bottom-[20%] -left-[10%] w-[50vw] h-[50vw] bg-brand-gold/5 rounded-full blur-[120px] opacity-30">
-    </div>
-  </div>
 
-  <!-- MAIN CONTENT -->
-  <div class="relative z-10">
-
-    <!-- FIXED NAVBAR -->
-    <nav
-      class="fixed top-0 left-0 w-full z-[100] bg-brand-darker/90 backdrop-blur-md border-b border-white/5 transition-all duration-300">
-      <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-        <div class="flex items-center select-none">
-          <!-- LOGO PLACEHOLDER - Substitua o src abaixo pela URL da sua imagem -->
-          <img src="imagens/Logo 1.png" alt="Logo Clube Avançar"
-            class="h-8 md:h-10 w-auto object-contain" />
-        </div>
-
-        <div class="hidden lg:flex items-center gap-8 text-gray-300 text-sm font-medium">
-          <a href="#" class="hover:text-brand-gold transition-colors">O Clube</a>
-          <a href="#" class="hover:text-brand-gold transition-colors">Benefícios</a>
-          <a href="#" class="hover:text-brand-gold transition-colors">Eventos</a>
-          <div class="flex items-center gap-2 cursor-pointer group">
-            <span class="group-hover:text-brand-gold transition-colors">Portal do Membro</span>
-            <span
-              class="bg-brand-gold text-brand-darker text-[10px] font-bold px-1.5 py-0.5 rounded uppercase">Login</span>
+    <!-- MAIN CONTENT -->
+    <div class="relative z-10">
+      <!-- FIXED NAVBAR -->
+      <nav
+        class="fixed top-0 left-0 w-full z-[100] bg-brand-darker/90 backdrop-blur-md transition-all duration-300"
+      >
+        <div
+          class="container mx-auto px-6 py-4 flex justify-between items-center"
+        >
+          <div class="flex items-center select-none">
+            <!-- LOGO PLACEHOLDER - Substitua o src abaixo pela URL da sua imagem -->
+            <img
+              src="imagens/Logo 1.png"
+              alt="Logo Clube Avançar"
+              class="h-8 md:h-10 w-auto object-contain"
+            />
           </div>
-        </div>
 
-        <button onclick="scrollToSection('pricing')"
-          class="hidden lg:flex items-center gap-2 border border-white/30 text-white px-6 py-3 rounded hover:border-brand-gold hover:text-brand-gold transition-all duration-300 text-sm font-medium">
-          Aplicar para o Clube <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-        </button>
+          <div
+            class="hidden lg:flex items-center gap-8 text-gray-300 text-sm font-medium"
+          >
+            <a href="#" class="hover:text-brand-gold transition-colors"
+              >O Clube</a
+            >
+            <a href="#" class="hover:text-brand-gold transition-colors"
+              >Benefícios</a
+            >
+            <a href="#" class="hover:text-brand-gold transition-colors"
+              >Eventos</a
+            >
+            <div class="flex items-center gap-2 cursor-pointer group">
+              <span class="group-hover:text-brand-gold transition-colors"
+                >Portal do Membro</span
+              >
+              <span
+                class="bg-brand-gold text-brand-darker text-[10px] font-bold px-1.5 py-0.5 rounded uppercase"
+                >Login</span
+              >
+            </div>
+          </div>
 
-        <button class="lg:hidden text-white" id="menu-btn">
-          <i data-lucide="menu"></i>
-        </button>
-      </div>
-    </nav>
+          <button
+            onclick="scrollToSection('pricing')"
+            class="hidden lg:flex items-center gap-2 border border-white/30 text-white px-6 py-3 rounded hover:border-brand-gold hover:text-brand-gold transition-all duration-300 text-sm font-medium"
+          >
+            Aplicar para o Clube
+            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          </button>
 
-    <!-- HERO SECTION WRAPPER -->
-    <div id="hero-scroll-wrapper" class="relative" style="height: 150vh;">
-      <section id="hero-section"
-        class="sticky top-0 h-screen bg-brand-darker overflow-hidden flex flex-col font-sans z-10">
-        <div class="absolute inset-0 bg-gradient-to-r from-black via-black/95 to-brand-dark/80 z-0"></div>
-
-        <!-- Decorative Circles -->
-        <div
-          class="absolute right-[-15%] md:right-[-5%] top-1/2 md:top-[60%] -translate-y-1/2 w-[500px] h-[500px] md:w-[900px] md:h-[900px] border border-white/5 rounded-full z-0 pointer-events-none">
-        </div>
-        <div
-          class="absolute right-[-15%] md:right-[-5%] top-1/2 md:top-[60%] -translate-y-1/2 w-[350px] h-[350px] md:w-[650px] md:h-[650px] border border-white/5 rounded-full z-0 pointer-events-none">
-        </div>
-
-        <!-- Mobile Menu (Fixed position relative to viewport now) -->
-        <div id="mobile-menu"
-          class="hidden lg:hidden fixed top-[70px] left-0 w-full bg-brand-darker z-[90] border-b border-white/10 p-6 flex flex-col gap-4 shadow-2xl">
-          <a href="#" class="text-white hover:text-brand-gold font-medium">O Clube</a>
-          <a href="#" class="text-white hover:text-brand-gold font-medium">Benefícios</a>
-          <a href="#" class="text-white hover:text-brand-gold font-medium">Eventos</a>
-          <button onclick="scrollToSection('pricing'); toggleMenu()"
-            class="w-full text-left text-brand-gold font-bold flex items-center gap-2">
-            Aplicar para o Clube <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+          <button class="lg:hidden text-white" id="menu-btn">
+            <i data-lucide="menu"></i>
           </button>
         </div>
+      </nav>
 
-        <!-- Hero Content -->
-        <div
-          class="hero-content-container relative z-10 container mx-auto px-6 flex flex-col lg:flex-row-reverse items-center justify-center flex-grow pt-20 lg:pt-0">
+      <!-- HERO SECTION WRAPPER -->
+      <div id="hero-scroll-wrapper" class="relative">
+        <section
+          id="hero-section"
+          class="min-h-screen bg-brand-darker overflow-hidden flex flex-col font-sans z-10 relative"
+        >
+          <div
+            class="absolute inset-0 bg-gradient-to-r from-black via-black/95 to-brand-dark/80 z-0"
+          ></div>
 
-          <!-- Title Section (Initially Centered, Moves Right) -->
-          <div class="lg:w-auto mb-12 lg:mb-0 z-20 reveal hero-title-wrapper">
-            <div class="hero-title-content">
-              <h1 class="text-5xl md:text-7xl lg:text-[5.5rem] font-sans text-white leading-[1.1] mb-6">
-                <span class="font-light block">Faça parte do</span>
-                <span class="text-brand-gold font-bold block whitespace-nowrap">Clube Avançar</span>
-              </h1>
-              <p class="text-gray-300 text-lg lg:text-xl font-light leading-relaxed max-w-xl mb-10 mx-auto">
-                O ecossistema definitivo para donos de pequenas e médias empresas que desejam liberdade, lucro e
-                conexões de alto nível.
-              </p>
-              <button onclick="scrollToSection('pricing')"
-                class="group bg-brand-gold text-brand-darker text-lg font-bold px-8 py-5 rounded-lg shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto">
-                Quero ser membro
-                <i data-lucide="arrow-up-right"
-                  class="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-              </button>
-            </div>
+          <!-- Decorative Circles -->
+          <div
+            class="absolute right-[-15%] md:right-[-5%] top-1/2 md:top-[30%] -translate-y-1/2 w-[500px] h-[500px] md:w-[900px] md:h-[900px] border border-white/5 rounded-full z-0 pointer-events-none"
+          ></div>
+          <div
+            class="absolute right-[-15%] md:right-[-5%] top-1/2 md:top-[60%] -translate-y-1/2 w-[350px] h-[350px] md:w-[650px] md:h-[650px] border border-white/5 rounded-full z-0 pointer-events-none"
+          ></div>
+
+          <!-- Mobile Menu (Fixed position relative to viewport now) -->
+          <div
+            id="mobile-menu"
+            class="hidden lg:hidden fixed top-[70px] left-0 w-full bg-brand-darker z-[90] border-b border-white/10 p-6 flex flex-col gap-4 shadow-2xl"
+          >
+            <a href="#" class="text-white hover:text-brand-gold font-medium"
+              >O Clube</a
+            >
+            <a href="#" class="text-white hover:text-brand-gold font-medium"
+              >Benefícios</a
+            >
+            <a href="#" class="text-white hover:text-brand-gold font-medium"
+              >Eventos</a
+            >
+            <button
+              onclick="
+                scrollToSection('pricing');
+                toggleMenu();
+              "
+              class="w-full text-left text-brand-gold font-bold flex items-center gap-2"
+            >
+              Aplicar para o Clube
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </button>
           </div>
 
-          <!-- Image Section (Initially Hidden, Appears Left) -->
+          <!-- Hero Content -->
           <div
-            class="hidden lg:flex lg:w-auto w-full relative h-[50vh] lg:h-[85vh] justify-center lg:justify-start items-center z-10 overflow-hidden lg:overflow-visible hero-image-wrapper pl-10">
-            <div class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-gold/10 blur-[120px] rounded-full z-0">
+            class="hero-content-container relative z-10 container mx-auto px-6 flex flex-col lg:flex-row-reverse items-center lg:items-start justify-center flex-grow pt-24 pb-20 lg:pt-32 lg:pb-0"
+          >
+            <!-- Title Section (Initially Centered, Moves Right) -->
+            <div class="lg:w-auto mb-12 lg:mb-0 z-20 hero-title-wrapper w-full">
+              <div
+                class="hero-title-content flex flex-col items-center text-center"
+              >
+                <h1
+                  class="text-4xl sm:text-5xl md:text-7xl lg:text-[7.5rem] font-serif font-bold text-white leading-none mb-6 md:mb-8 tracking-tight text-center"
+                >
+                  Clube <span class="text-brand-gold">Avançar</span>
+                </h1>
+                <p
+                  class="text-gray-400 text-xl md:text-2xl font-light leading-relaxed max-w-5xl mb-8 md:mb-12 mx-auto text-center"
+                >
+                  O ambiente certo acelera resultados. Conecte-se ao maior hub
+                  de negócios e inovação.
+                </p>
+                <button
+                  onclick="scrollToSection('pricing')"
+                  class="lg:hidden group bg-brand-gold text-brand-darker text-lg font-bold px-8 py-5 rounded-lg shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-300 flex items-center gap-3 mx-auto mb-16 md:mb-12"
+                >
+                  Quero ser membro
+                  <i
+                    data-lucide="arrow-up-right"
+                    class="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+                  ></i>
+                </button>
+
+                <div
+                  class="flex flex-row items-center gap-3 text-brand-gold text-[10px] font-bold tracking-[0.2em] uppercase animate-bounce opacity-80 mt-8 lg:mt-12"
+                >
+                  <i data-lucide="arrow-down" class="w-4 h-4"></i>
+                  Role para descobrir
+                </div>
+              </div>
             </div>
 
-            <!-- Dual Image Container -->
+            <!-- Image Section (Initially Hidden, Appears Left) -->
             <div
-              class="relative w-[600px] h-[500px] z-10 transform scale-90 hover:scale-95 transition-transform duration-700">
-
-              <!-- FOTO 1 (Fundo/Cima) - Substitua o src abaixo pela sua foto aérea/cidade -->
+              class="hidden lg:flex lg:w-auto w-full relative h-[50vh] lg:h-[80vh] justify-center lg:justify-start items-center z-10 overflow-hidden lg:overflow-visible hero-image-wrapper pl-10"
+            >
               <div
-                class="absolute top-0 right-0 w-[380px] h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 z-10">
-                <img src="imagens/— Visualização define o destino.Planejamento organiza o caminho.Execução transforma intenção em  (1).jpg"
-                  alt="Vista Aérea (Coloque sua foto aqui)"
-                  class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-              </div>
+                class="absolute bottom-0 left-0 w-[400px] h-[400px] bg-brand-gold/10 blur-[120px] rounded-full z-0"
+              ></div>
 
-              <!-- FOTO 2 (Frente/Baixo) - Substitua o src abaixo pela sua foto da fachada/prédio -->
+              <!-- Dual Image Container -->
               <div
-                class="absolute bottom-0 left-0 w-[380px] h-[300px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-20">
-                <img src="imagens/— Visualização define o destino.Planejamento organiza o caminho.Execução transforma intenção em .jpg"
-                  alt="Fachada Hub (Coloque sua foto aqui)"
-                  class="w-full h-full object-cover hover:scale-110 transition-transform duration-700" />
-              </div>
+                class="relative w-[600px] h-[500px] z-10 transform scale-90 hover:scale-95 transition-transform duration-700"
+              >
+                <!-- FOTO 1 (Fundo/Cima) - Substitua o src abaixo pela sua foto aérea/cidade -->
+                <div
+                  class="absolute top-0 right-0 w-[380px] h-[300px] rounded-3xl overflow-hidden shadow-2xl border border-white/10 z-10"
+                >
+                  <img
+                    src="imagens/— Visualização define o destino.Planejamento organiza o caminho.Execução transforma intenção em  (1).jpg"
+                    alt="Vista Aérea (Coloque sua foto aqui)"
+                    class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                  />
+                </div>
 
+                <!-- FOTO 2 (Frente/Baixo) - Substitua o src abaixo pela sua foto da fachada/prédio -->
+                <div
+                  class="absolute bottom-0 left-0 w-[380px] h-[300px] rounded-3xl overflow-hidden shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/10 z-20"
+                >
+                  <img
+                    src="imagens/— Visualização define o destino.Planejamento organiza o caminho.Execução transforma intenção em .jpg"
+                    alt="Fachada Hub (Coloque sua foto aqui)"
+                    class="w-full h-full object-cover hover:scale-110 transition-transform duration-700"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+      </div>
+
+      <!-- STATS SECTION -->
+      <section class="relative py-24 bg-brand-darker overflow-hidden">
+        <div class="absolute inset-0 z-0">
+          <div class="absolute inset-0 bg-brand-darker/95 z-10"></div>
+          <img
+            src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop"
+            alt="Background"
+            class="w-full h-full object-cover object-center opacity-10"
+          />
+        </div>
+        <div class="container mx-auto px-6 relative z-20">
+          <div class="max-w-3xl mb-20 reveal">
+            <h2
+              class="text-3xl md:text-5xl font-sans text-white leading-[1.2] font-light"
+            >
+              Clube Avançar <br class="hidden md:block" />
+              está <span class="text-brand-gold font-bold">acelerando</span> o
+              <br class="hidden md:block" />
+              empreendedorismo no Brasil
+            </h2>
+          </div>
+          <div
+            class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 max-w-4xl"
+          >
+            <!-- Stat 1 -->
+            <div class="flex flex-col gap-3 reveal">
+              <div class="flex items-center gap-3">
+                <span class="text-brand-gold text-4xl font-light italic"
+                  >/</span
+                >
+                <span class="text-4xl md:text-5xl font-bold text-white"
+                  >+ 15 mil</span
+                >
+              </div>
+              <p
+                class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4"
+              >
+                Empresários já fizeram a imersão Acelerador Empresarial.
+              </p>
+            </div>
+            <!-- Stat 2 -->
+            <div
+              class="flex flex-col gap-3 reveal"
+              style="transition-delay: 100ms"
+            >
+              <div class="flex items-center gap-3">
+                <span class="text-brand-gold text-4xl font-light italic"
+                  >/</span
+                >
+                <span class="text-4xl md:text-5xl font-bold text-white"
+                  >+ 700</span
+                >
+              </div>
+              <p
+                class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4"
+              >
+                Membros no Clube, a maior comunidade de empresários no Brasil.
+              </p>
+            </div>
+            <!-- Stat 3 -->
+            <div
+              class="flex flex-col gap-3 reveal"
+              style="transition-delay: 200ms"
+            >
+              <div class="flex items-center gap-3">
+                <span class="text-brand-gold text-4xl font-light italic"
+                  >/</span
+                >
+                <span class="text-4xl md:text-5xl font-bold text-white"
+                  >+ 30 bi</span
+                >
+              </div>
+              <p
+                class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4"
+              >
+                De faturamento anual, entre os 600 empresários membros ativos.
+              </p>
+            </div>
+            <!-- Stat 4 -->
+            <div
+              class="flex flex-col gap-3 reveal"
+              style="transition-delay: 300ms"
+            >
+              <div class="flex items-center gap-3">
+                <span class="text-brand-gold text-4xl font-light italic"
+                  >/</span
+                >
+                <span class="text-4xl md:text-5xl font-bold text-white"
+                  >+ 150 mil</span
+                >
+              </div>
+              <p
+                class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4"
+              >
+                Alunos treinados na história do Grupo em todos os programas.
+              </p>
             </div>
           </div>
         </div>
       </section>
-    </div>
 
-    <!-- STATS SECTION -->
-    <section class="relative py-24 bg-brand-darker overflow-hidden">
-      <div class="absolute inset-0 z-0">
-        <div class="absolute inset-0 bg-brand-darker/95 z-10"></div>
-        <img src="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=2664&auto=format&fit=crop"
-          alt="Background" class="w-full h-full object-cover object-center opacity-10" />
-      </div>
-      <div class="container mx-auto px-6 relative z-20">
-        <div class="max-w-3xl mb-20 reveal">
-          <h2 class="text-3xl md:text-5xl font-sans text-white leading-[1.2] font-light">
-            Clube Avançar <br class="hidden md:block" />
-            está <span class="text-brand-gold font-bold">acelerando</span> o <br class="hidden md:block" />
-            empreendedorismo no Brasil
-          </h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-16 max-w-4xl">
-          <!-- Stat 1 -->
-          <div class="flex flex-col gap-3 reveal">
-            <div class="flex items-center gap-3">
-              <span class="text-brand-gold text-4xl font-light italic">/</span>
-              <span class="text-4xl md:text-5xl font-bold text-white">+ 15 mil</span>
-            </div>
-            <p class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4">
-              Empresários já fizeram a imersão Acelerador Empresarial.</p>
-          </div>
-          <!-- Stat 2 -->
-          <div class="flex flex-col gap-3 reveal" style="transition-delay: 100ms;">
-            <div class="flex items-center gap-3">
-              <span class="text-brand-gold text-4xl font-light italic">/</span>
-              <span class="text-4xl md:text-5xl font-bold text-white">+ 700</span>
-            </div>
-            <p class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4">Membros
-              no Clube, a maior comunidade de empresários no Brasil.</p>
-          </div>
-          <!-- Stat 3 -->
-          <div class="flex flex-col gap-3 reveal" style="transition-delay: 200ms;">
-            <div class="flex items-center gap-3">
-              <span class="text-brand-gold text-4xl font-light italic">/</span>
-              <span class="text-4xl md:text-5xl font-bold text-white">+ 30 bi</span>
-            </div>
-            <p class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4">De
-              faturamento anual, entre os 600 empresários membros ativos.</p>
-          </div>
-          <!-- Stat 4 -->
-          <div class="flex flex-col gap-3 reveal" style="transition-delay: 300ms;">
-            <div class="flex items-center gap-3">
-              <span class="text-brand-gold text-4xl font-light italic">/</span>
-              <span class="text-4xl md:text-5xl font-bold text-white">+ 150 mil</span>
-            </div>
-            <p class="text-gray-400 text-sm md:text-base max-w-xs leading-relaxed border-l border-white/10 pl-4">Alunos
-              treinados na história do Grupo em todos os programas.</p>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ABOUT GROUP SECTION -->
-    <section class="py-24 bg-brand-darker border-t border-white/5 relative overflow-hidden">
-      <div class="absolute inset-0 z-0 opacity-10"
-        style="background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px); background-size: 40px 40px;">
-      </div>
-      <div class="absolute inset-0 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker z-0"></div>
-      <div class="container mx-auto px-6 text-center relative z-10">
-        <div class="reveal">
-          <h2 class="text-3xl md:text-5xl font-sans text-white mb-4 font-light leading-tight">
-            Conheça mais sobre o <span class="text-brand-gold font-bold">Grupo Acelerador</span>
-          </h2>
-          <p class="text-gray-300 text-sm md:text-base font-normal mb-14 tracking-wide">
-            Uma holding multimilionária com empresas de vários segmentos.
-          </p>
-        </div>
-        <div class="reveal flex justify-center w-full" style="transition-delay: 200ms;">
-          <div
-            class="relative w-full max-w-4xl aspect-[16/9] bg-brand-card shadow-2xl group cursor-pointer border border-white/10 overflow-hidden rounded-xl">
-            <img src="https://images.unsplash.com/photo-1522202176988-66273c2fd55f?q=80&w=2671&auto=format&fit=crop"
-              alt="Grupo Acelerador Team"
-              class="w-full h-full object-cover opacity-70 transition-transform duration-700 group-hover:scale-105 group-hover:opacity-90" />
-            <div class="absolute inset-0 bg-black/40 group-hover:bg-black/20 transition-colors duration-300"></div>
-            <div class="absolute inset-0 flex items-center justify-center">
-              <div
-                class="w-20 h-20 rounded-full border-2 border-white/80 bg-black/40 backdrop-blur-sm flex items-center justify-center group-hover:scale-110 group-hover:bg-white/10 transition-all duration-300 shadow-[0_0_30px_rgba(255,255,255,0.1)]">
-                <i data-lucide="play" class="w-8 h-8 text-white fill-white ml-1"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- ACCELERATOR METHOD SECTION -->
-    <section class="py-16 md:py-24 bg-black relative overflow-hidden font-sans">
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
-          <div class="w-full lg:w-1/2 relative lg:sticky lg:top-24 mb-8 lg:mb-0 reveal">
+      <!-- ABOUT GROUP SECTION -->
+      <section
+        class="py-24 bg-brand-darker border-t border-white/5 relative overflow-hidden"
+      >
+        <div
+          class="absolute inset-0 z-0 opacity-10"
+          style="
+            background-image:
+              linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+              linear-gradient(
+                90deg,
+                rgba(255, 255, 255, 0.05) 1px,
+                transparent 1px
+              );
+            background-size: 40px 40px;
+          "
+        ></div>
+        <div
+          class="absolute inset-0 bg-gradient-to-b from-brand-darker via-transparent to-brand-darker z-0"
+        ></div>
+        <div class="container mx-auto px-6 text-center relative z-10">
+          <div class="reveal">
             <h2
-              class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-[1.1] mb-6 tracking-tight">
-              Se você é <br /> empresário, <br /> domine a <br />
-              linguagem do <span class="text-[#EAB308] font-bold">Clube <br /> Avançar</span>
+              class="text-3xl md:text-5xl font-sans text-white mb-4 font-light leading-tight"
+            >
+              Conheça mais sobre o
+              <span class="text-brand-gold font-bold">Grupo Acelerador</span>
             </h2>
-            <p className="text-gray-400 text-base md:text-lg mb-8 md:mb-10 leading-relaxed max-w-md">
-              Mais do que networking, compartilhamos uma metodologia única de gestão que acelera negócios.
+            <p
+              class="text-gray-300 text-sm md:text-base font-normal mb-14 tracking-wide"
+            >
+              Uma holding multimilionária com empresas de vários segmentos.
             </p>
+          </div>
+          <div
+            class="reveal flex justify-center w-full"
+            style="transition-delay: 200ms"
+          >
+            <div
+              class="relative w-full max-w-4xl aspect-[16/9] bg-brand-card shadow-2xl border border-white/10 overflow-hidden rounded-xl group cursor-pointer"
+              onclick="toggleMainVideo(this)"
+            >
+              <video
+                id="main-video"
+                class="w-full h-full object-cover"
+                poster="imagens/— Visualização define o destino.Planejamento organiza o caminho.Execução transforma intenção em .jpg"
+              >
+                <source src="videos/hub-avancar (1) (1).mp4" type="video/mp4" />
+                Seu navegador não suporta a tag de vídeo.
+              </video>
+              <!-- Custom Play Button Overlay -->
+              <div
+                class="absolute inset-0 bg-black/30 flex items-center justify-center transition-opacity duration-300 play-overlay group-hover:bg-black/20"
+              >
+                <div
+                  class="w-20 h-20 bg-brand-gold/90 rounded-full flex items-center justify-center shadow-[0_0_30px_rgba(212,175,55,0.4)] transform group-hover:scale-110 transition-all duration-300"
+                >
+                  <i
+                    data-lucide="play"
+                    class="w-8 h-8 text-brand-darker fill-brand-darker ml-1"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ACCELERATOR METHOD SECTION -->
+      <section
+        class="py-16 md:py-24 bg-black relative overflow-hidden font-sans"
+      >
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="flex flex-col lg:flex-row gap-10 lg:gap-16 items-start">
+            <div
+              class="w-full lg:w-1/2 relative lg:sticky lg:top-24 mb-8 lg:mb-0 reveal"
+            >
+              <h2
+                class="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-medium text-white leading-[1.1] mb-6 tracking-tight"
+              >
+                Se você é <br />
+                empresário, <br />
+                domine a <br />
+                linguagem do
+                <span class="text-[#EAB308] font-bold"
+                  >Clube <br />
+                  Avançar</span
+                >
+              </h2>
+              <p
+                class="text-gray-400 text-base md:text-lg mb-16 md:mb-24 leading-relaxed max-w-md"
+              >
+                Mais do que networking, compartilhamos uma metodologia única de
+                gestão que acelera negócios.
+              </p>
+              <button
+                onclick="scrollToSection('pricing')"
+                class="w-full md:w-auto bg-[#EAB308] hover:bg-[#CA8A04] text-black font-bold text-lg py-4 px-8 rounded flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg"
+              >
+                Quero fazer parte
+                <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+              </button>
+            </div>
+
+            <div
+              class="w-full lg:w-1/2 pt-0 lg:pt-4 reveal"
+              style="transition-delay: 200ms"
+            >
+              <p class="text-[#EAB308] text-lg mb-6 font-medium md:text-left">
+                O método P.P.R. é a nossa base:
+              </p>
+              <div class="flex flex-col gap-4">
+                <!-- Step 1 -->
+                <div
+                  class="accordion-item rounded-lg border bg-[#121212] border-white/10 hover:border-white/20 cursor-pointer overflow-hidden transition-all duration-300"
+                  onclick="toggleAccordion(this)"
+                >
+                  <div class="p-5 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                      <i
+                        data-lucide="refresh-ccw"
+                        class="w-5 h-5 text-gray-400 icon-active"
+                      ></i>
+                      <span class="text-white text-base md:text-lg font-medium"
+                        >Processos</span
+                      >
+                    </div>
+                    <i
+                      data-lucide="chevron-down"
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 chevron"
+                    ></i>
+                  </div>
+                  <div class="accordion-content px-5 pb-0">
+                    <p
+                      class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4 pb-6"
+                    >
+                      Organize a casa. No Clube, utilizamos ferramentas práticas
+                      para estruturar processos que funcionam sozinhos.
+                    </p>
+                  </div>
+                </div>
+                <!-- Connector -->
+                <div class="flex justify-center">
+                  <div
+                    class="w-full bg-[#121212] border border-white/5 rounded-lg h-10 md:h-12 flex items-center justify-center"
+                  >
+                    <i data-lucide="plus" class="w-6 h-6 text-white"></i>
+                  </div>
+                </div>
+
+                <!-- Step 2 -->
+                <div
+                  class="accordion-item rounded-lg border bg-[#121212] border-white/10 hover:border-white/20 cursor-pointer overflow-hidden transition-all duration-300"
+                  onclick="toggleAccordion(this)"
+                >
+                  <div class="p-5 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                      <i
+                        data-lucide="users"
+                        class="w-5 h-5 text-gray-400 icon-active"
+                      ></i>
+                      <span class="text-white text-base md:text-lg font-medium"
+                        >Pessoas</span
+                      >
+                    </div>
+                    <i
+                      data-lucide="chevron-down"
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 chevron"
+                    ></i>
+                  </div>
+                  <div class="accordion-content px-5 pb-0">
+                    <p
+                      class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4 pb-6"
+                    >
+                      Ninguém cresce sozinho. Nossos membros têm acesso às
+                      melhores práticas de contratação e cultura.
+                    </p>
+                  </div>
+                </div>
+                <!-- Connector -->
+                <div class="flex justify-center">
+                  <div
+                    class="w-full bg-[#121212] border border-white/5 rounded-lg h-10 md:h-12 flex items-center justify-center"
+                  >
+                    <i data-lucide="equal" class="w-6 h-6 text-white"></i>
+                  </div>
+                </div>
+
+                <!-- Step 3 -->
+                <div
+                  class="accordion-item rounded-lg border bg-[#121212] border-white/10 hover:border-white/20 cursor-pointer overflow-hidden transition-all duration-300"
+                  onclick="toggleAccordion(this)"
+                >
+                  <div class="p-5 flex items-center justify-between">
+                    <div class="flex items-center gap-4">
+                      <i
+                        data-lucide="rocket"
+                        class="w-5 h-5 text-gray-400 icon-active"
+                      ></i>
+                      <span class="text-white text-base md:text-lg font-medium"
+                        >Resultados</span
+                      >
+                    </div>
+                    <i
+                      data-lucide="chevron-down"
+                      class="w-5 h-5 text-gray-500 transition-transform duration-300 chevron"
+                    ></i>
+                  </div>
+                  <div class="accordion-content px-5 pb-0">
+                    <p
+                      class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4 pb-6"
+                    >
+                      Escala real. A soma de processos eficientes e pessoas
+                      engajadas gera o lucro líquido.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TARGET AUDIENCE SECTION -->
+      <section
+        class="py-24 bg-brand-dark relative border-t border-white/5 overflow-hidden"
+      >
+        <div
+          class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] bg-brand-gold/5 blur-[100px] rounded-[100%] pointer-events-none -translate-y-1/2"
+        ></div>
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center max-w-4xl mx-auto mb-20 reveal">
+            <h2
+              class="text-3xl md:text-5xl font-sans text-white mb-6 font-light leading-tight"
+            >
+              Para quem é o
+              <span class="text-brand-gold font-bold"
+                >Clube <br />
+                Avançar?</span
+              >
+            </h2>
+            <p class="text-gray-300 text-lg leading-relaxed">
+              Exclusivo para donos e donas de empresas que buscam <br />
+              conexões estratégicas e crescimento acelerado.
+            </p>
+          </div>
+          <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-16">
+            <div
+              class="bg-brand-card/30 p-8 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-brand-gold/30 transition-colors duration-500 reveal-left"
+            >
+              <h3 class="text-brand-gold text-xl md:text-2xl mb-8 font-medium">
+                O que você busca hoje?
+              </h3>
+              <ul class="space-y-6">
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >Estar em ambientes com empresários que jogam o mesmo
+                    jogo.</span
+                  >
+                </li>
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >Acesso a estratégias validadas.</span
+                  >
+                </li>
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >Sair do operacional.</span
+                  >
+                </li>
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >Uma rede de apoio.</span
+                  >
+                </li>
+              </ul>
+            </div>
+            <div
+              class="bg-brand-card/30 p-8 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-brand-gold/30 transition-colors duration-500 reveal-right"
+            >
+              <h3 class="text-brand-gold text-xl md:text-2xl mb-8 font-medium">
+                O que você quer eliminar?
+              </h3>
+              <ul class="space-y-6">
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >A solidão do empreendedor.</span
+                  >
+                </li>
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >A falta de processos claros.</span
+                  >
+                </li>
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >A dependência exclusiva da sua presença.</span
+                  >
+                </li>
+                <li class="flex items-start gap-4">
+                  <i
+                    data-lucide="check-circle-2"
+                    class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"
+                  ></i
+                  ><span
+                    class="text-gray-300 text-sm md:text-base leading-relaxed font-light"
+                    >A estagnação de faturamento.</span
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ADVISORIES SECTION -->
+      <section
+        class="py-24 bg-brand-dark relative overflow-hidden border-t border-white/5"
+      >
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-20 reveal">
+            <span
+              class="text-brand-gold font-bold tracking-widest text-xs uppercase mb-3 block"
+              >NÃO CAMINHE SOZINHO</span
+            >
+            <h2 class="text-3xl md:text-5xl font-serif text-white mb-6">
+              Um Conselho de <span class="text-brand-gold">Especialistas</span>
+              <br />
+              à sua disposição
+            </h2>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            <!-- Advisory Items -->
+            <div
+              class="group bg-[#121212] hover:bg-[#161616] border border-white/5 hover:border-brand-gold/40 p-10 rounded-xl transition-all duration-500 h-full flex flex-col items-start relative overflow-hidden hover:-translate-y-2 shadow-lg reveal"
+            >
+              <div
+                class="w-16 h-16 bg-brand-darker border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-brand-gold group-hover:scale-105 transition-all duration-300 relative z-10 shadow-inner"
+              >
+                <i
+                  data-lucide="trending-up"
+                  class="w-7 h-7 text-gray-400 group-hover:text-brand-gold transition-colors duration-300"
+                ></i>
+              </div>
+              <h3
+                class="text-2xl font-bold text-white mb-4 font-sans tracking-tight group-hover:text-brand-gold transition-colors duration-300"
+              >
+                Contábil
+              </h3>
+              <p
+                class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow border-l-2 border-white/5 pl-4 group-hover:border-brand-gold/30 transition-colors duration-300"
+              >
+                Gestão fiscal e tributária eficiente.
+              </p>
+            </div>
+            <div
+              class="group bg-[#121212] hover:bg-[#161616] border border-white/5 hover:border-brand-gold/40 p-10 rounded-xl transition-all duration-500 h-full flex flex-col items-start relative overflow-hidden hover:-translate-y-2 shadow-lg reveal"
+              style="transition-delay: 100ms"
+            >
+              <div
+                class="w-16 h-16 bg-brand-darker border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-brand-gold group-hover:scale-105 transition-all duration-300 relative z-10 shadow-inner"
+              >
+                <i
+                  data-lucide="scale"
+                  class="w-7 h-7 text-gray-400 group-hover:text-brand-gold transition-colors duration-300"
+                ></i>
+              </div>
+              <h3
+                class="text-2xl font-bold text-white mb-4 font-sans tracking-tight group-hover:text-brand-gold transition-colors duration-300"
+              >
+                Jurídico
+              </h3>
+              <p
+                class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow border-l-2 border-white/5 pl-4 group-hover:border-brand-gold/30 transition-colors duration-300"
+              >
+                Proteção legal para o seu negócio.
+              </p>
+            </div>
+            <div
+              class="group bg-[#121212] hover:bg-[#161616] border border-white/5 hover:border-brand-gold/40 p-10 rounded-xl transition-all duration-500 h-full flex flex-col items-start relative overflow-hidden hover:-translate-y-2 shadow-lg reveal"
+              style="transition-delay: 200ms"
+            >
+              <div
+                class="w-16 h-16 bg-brand-darker border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-brand-gold group-hover:scale-105 transition-all duration-300 relative z-10 shadow-inner"
+              >
+                <i
+                  data-lucide="megaphone"
+                  class="w-7 h-7 text-gray-400 group-hover:text-brand-gold transition-colors duration-300"
+                ></i>
+              </div>
+              <h3
+                class="text-2xl font-bold text-white mb-4 font-sans tracking-tight group-hover:text-brand-gold transition-colors duration-300"
+              >
+                Marketing
+              </h3>
+              <p
+                class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow border-l-2 border-white/5 pl-4 group-hover:border-brand-gold/30 transition-colors duration-300"
+              >
+                Estratégias de posicionamento e vendas.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- SOCIAL PROOF SECTION -->
+      <section
+        class="pt-24 pb-0 bg-brand-darker relative overflow-hidden border-t border-white/5"
+      >
+        <!-- Strong Orange/Gold Glow at bottom -->
+        <div
+          class="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[800px] md:w-[1000px] h-[400px] bg-brand-gold rounded-[100%] blur-[80px] opacity-30 pointer-events-none z-0"
+        ></div>
+
+        <!-- Additional solid arc -->
+        <div
+          class="absolute bottom-[-280px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-gold rounded-full opacity-20 blur-[40px] z-0"
+        ></div>
+
+        <div class="container mx-auto px-6 text-center relative z-10">
+          <div class="reveal">
+            <h2
+              class="text-3xl md:text-5xl font-sans text-white mb-8 font-light leading-tight"
+            >
+              Liderado por
+              <span class="text-brand-gold font-bold">Marcus Marques</span>,
+              <br class="hidden md:block" />
+              mentor de mais de 2 milhões de <br class="hidden md:block" />
+              empreendedores nas redes sociais.
+            </h2>
+          </div>
+
+          <div class="reveal" style="transition-delay: 200ms">
+            <a
+              href="https://www.instagram.com/hubavancar/"
+              target="_blank"
+              rel="noreferrer"
+              class="inline-flex items-center gap-2 border border-brand-gold text-gray-200 hover:text-brand-darker hover:bg-brand-gold transition-all duration-300 px-8 py-3 rounded text-sm font-bold tracking-wide mb-12 uppercase"
+            >
+              Siga @HubAvancar
+              <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
+            </a>
+          </div>
+
+          <div class="reveal" style="transition-delay: 400ms">
+            <!-- Phone Mockup Container with negative margin to hide bottom half -->
+            <div
+              class="relative max-w-4xl mx-auto flex justify-center items-end -mb-[300px]"
+            >
+              <!-- CSS Phone Mockup -->
+              <div
+                class="relative mx-auto border-gray-900 bg-gray-900 border-[12px] rounded-[3rem] h-[650px] w-[320px] shadow-2xl flex flex-col items-center justify-start z-10"
+                style="
+                  box-shadow:
+                    0 25px 50px -12px rgba(0, 0, 0, 0.5),
+                    inset 0 0 20px rgba(0, 0, 0, 0.8);
+                "
+              >
+                <!-- Side Buttons -->
+                <div
+                  class="h-[32px] w-[3px] bg-gray-800 absolute -left-[15px] top-[72px] rounded-l-lg"
+                ></div>
+                <div
+                  class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[124px] rounded-l-lg"
+                ></div>
+                <div
+                  class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[178px] rounded-l-lg"
+                ></div>
+                <div
+                  class="h-[64px] w-[3px] bg-gray-800 absolute -right-[15px] top-[142px] rounded-r-lg"
+                ></div>
+
+                <!-- Screen -->
+                <div
+                  class="rounded-[2.3rem] overflow-hidden w-full h-full bg-black relative border-[2px] border-gray-800"
+                >
+                  <!-- Notch -->
+                  <div
+                    class="absolute top-0 left-1/2 -translate-x-1/2 w-[100px] h-[25px] bg-black rounded-b-xl z-20 flex justify-center items-center"
+                  >
+                    <div class="w-16 h-3 bg-gray-900/50 rounded-full"></div>
+                  </div>
+
+                  <!-- IMAGE WRAPPER -->
+                  <div
+                    class="w-full h-full pt-8 bg-black flex items-start justify-center"
+                  >
+                    <img
+                      src="imagens/instagram hub.jpg"
+                      alt="Tela do Celular"
+                      class="w-full h-auto object-contain"
+                    />
+                  </div>
+
+                  <!-- Screen Glare -->
+                  <div
+                    class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none"
+                  ></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- HUB GALLERY SECTION -->
+      <section class="py-24 bg-brand-darker relative border-t border-white/5">
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-16 reveal">
+            <h2 class="text-3xl md:text-5xl font-serif text-white mb-6">
+              Onde Grandes
+              <span class="text-brand-gold">Negócios</span> Acontecem
+            </h2>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+              Conheça o Hub Avançar. Uma infraestrutura completa de 2.000m².
+            </p>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div
+              class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
+              onclick="openLightbox('imagens/Auditório.jpg')"
+            >
+              <img
+                src="imagens/Auditório.jpg"
+                alt="Coworking"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              >
+                <div
+                  class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                >
+                  <i
+                    data-lucide="maximize-2"
+                    class="w-6 h-6 text-brand-darker"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <div
+              class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
+              style="transition-delay: 100ms"
+              onclick="openLightbox('imagens/1 andar.jpg')"
+            >
+              <img
+                src="imagens/1 andar.jpg"
+                alt="Auditório"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              >
+                <div
+                  class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                >
+                  <i
+                    data-lucide="maximize-2"
+                    class="w-6 h-6 text-brand-darker"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <div
+              class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
+              style="transition-delay: 200ms"
+              onclick="openLightbox('imagens/cafeteria.jpg')"
+            >
+              <img
+                src="imagens/cafeteria.jpg"
+                alt="Reuniões"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              >
+                <div
+                  class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                >
+                  <i
+                    data-lucide="maximize-2"
+                    class="w-6 h-6 text-brand-darker"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <!-- New Image 4 -->
+            <div
+              class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
+              onclick="openLightbox('imagens/externo.jpg')"
+            >
+              <img
+                src="imagens/externo.jpg"
+                alt="Lounge"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              >
+                <div
+                  class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                >
+                  <i
+                    data-lucide="maximize-2"
+                    class="w-6 h-6 text-brand-darker"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <!-- New Image 5 -->
+            <div
+              class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
+              style="transition-delay: 100ms"
+              onclick="openLightbox('imagens/sala de reunião.jpg')"
+            >
+              <img
+                src="imagens/sala de reunião.jpg"
+                alt="Colaboração"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              >
+                <div
+                  class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                >
+                  <i
+                    data-lucide="maximize-2"
+                    class="w-6 h-6 text-brand-darker"
+                  ></i>
+                </div>
+              </div>
+            </div>
+            <!-- New Image 6 -->
+            <div
+              class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
+              style="transition-delay: 200ms"
+              onclick="openLightbox('imagens/terreo.jpg')"
+            >
+              <img
+                src="imagens/terreo.jpg"
+                alt="Arquitetura"
+                class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100"
+              />
+              <div
+                class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center"
+              >
+                <div
+                  class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300"
+                >
+                  <i
+                    data-lucide="maximize-2"
+                    class="w-6 h-6 text-brand-darker"
+                  ></i>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- AGENDA SECTION -->
+      <section
+        class="py-24 bg-brand-dark relative border-t border-white/5 overflow-hidden"
+      >
+        <!-- Background Elements -->
+        <div
+          class="absolute top-0 right-0 w-[500px] h-[500px] bg-brand-gold/5 rounded-full blur-[120px] pointer-events-none -translate-y-1/2 translate-x-1/2"
+        ></div>
+
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-16 reveal">
+            <span
+              class="text-brand-gold font-bold tracking-widest text-xs uppercase mb-3 block"
+              >CALENDÁRIO 2026</span
+            >
+            <h2 class="text-3xl md:text-5xl font-serif text-white mb-6">
+              Agenda <span class="text-brand-gold">Anual</span>
+            </h2>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+              Planeje-se para estar presente nos momentos que transformarão seu
+              negócio.
+            </p>
+          </div>
+
+          <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <!-- Event Item 1 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Fevereiro</span
+                >
+                <i
+                  data-lucide="calendar"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Kick-off & Planejamento
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Definição de metas e estratégias para o ano.
+              </p>
+            </div>
+
+            <!-- Event Item 2 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 50ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Março</span
+                >
+                <i
+                  data-lucide="users"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Gestão de Pessoas
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Liderança, cultura e retenção de talentos.
+              </p>
+            </div>
+
+            <!-- Event Item 3 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 100ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Abril</span
+                >
+                <i
+                  data-lucide="trending-up"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Vendas e Negociação
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Técnicas avançadas para fechar grandes contratos.
+              </p>
+            </div>
+
+            <!-- Event Item 4 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 150ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Maio</span
+                >
+                <i
+                  data-lucide="megaphone"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Marketing e Branding
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Posicionamento de marca e aquisição de clientes.
+              </p>
+            </div>
+
+            <!-- Event Item 5 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 200ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Junho</span
+                >
+                <i
+                  data-lucide="pie-chart"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Finanças e Investimentos
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Gestão de fluxo de caixa e valuation.
+              </p>
+            </div>
+
+            <!-- Event Item 6 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 250ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Agosto</span
+                >
+                <i
+                  data-lucide="cpu"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Inovação e Tecnologia
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                IA e novas tecnologias aplicadas ao negócio.
+              </p>
+            </div>
+
+            <!-- Event Item 7 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 300ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Setembro</span
+                >
+                <i
+                  data-lucide="heart-handshake"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Experiência do Cliente
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Customer Success e fidelização.
+              </p>
+            </div>
+
+            <!-- Event Item 8 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 350ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Outubro</span
+                >
+                <i
+                  data-lucide="globe"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Expansão e Franquias
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Estratégias para escalar seu modelo de negócio.
+              </p>
+            </div>
+
+            <!-- Event Item 9 -->
+            <div
+              class="group bg-[#121212] border border-white/5 hover:border-brand-gold/40 p-6 rounded-xl transition-all duration-300 hover:-translate-y-1 reveal"
+              style="transition-delay: 400ms"
+            >
+              <div class="flex items-start justify-between mb-4">
+                <span
+                  class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                  >Novembro</span
+                >
+                <i
+                  data-lucide="award"
+                  class="w-5 h-5 text-gray-500 group-hover:text-brand-gold transition-colors"
+                ></i>
+              </div>
+              <h3
+                class="text-xl font-bold text-white mb-2 group-hover:text-brand-gold transition-colors"
+              >
+                Encerramento
+              </h3>
+              <p class="text-gray-400 text-sm leading-relaxed">
+                Premiação dos destaques do ano e networking.
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- WORKSHOP THEMES SECTION -->
+      <section
+        class="py-24 bg-brand-darker relative border-t border-white/5 overflow-hidden"
+      >
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-16 reveal">
+            <span
+              class="text-brand-gold font-bold tracking-widest text-xs uppercase mb-3 block"
+              >IMERSÃO TÉCNICA</span
+            >
+            <h2 class="text-3xl md:text-5xl font-serif text-white mb-6">
+              Temas dos <span class="text-brand-gold">Workshops</span>
+            </h2>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light">
+              Conteúdos práticos e ferramentas aplicáveis para o dia a dia da
+              sua operação.
+            </p>
+          </div>
+
+          <div class="relative max-w-4xl mx-auto">
+            <!-- Vertical Line (Desktop) -->
+            <div
+              class="hidden md:block absolute left-1/2 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-brand-gold/30 to-transparent -translate-x-1/2"
+            ></div>
+
+            <div class="space-y-12">
+              <!-- Item 1 -->
+              <div
+                class="relative flex flex-col md:flex-row items-center justify-between gap-8 reveal"
+              >
+                <div
+                  class="md:w-5/12 text-center md:text-right order-2 md:order-1"
+                >
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Estruturação Comercial
+                  </h3>
+                  <p class="text-gray-400 text-sm">
+                    Como montar um time de vendas de alta performance.
+                  </p>
+                </div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10 hidden md:block order-1 md:order-2"
+                ></div>
+                <div class="md:w-5/12 text-center md:text-left order-3">
+                  <span
+                    class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                    >Mês 01</span
+                  >
+                </div>
+              </div>
+
+              <!-- Item 2 -->
+              <div
+                class="relative flex flex-col md:flex-row items-center justify-between gap-8 reveal"
+              >
+                <div
+                  class="md:w-5/12 text-center md:text-right order-2 md:order-1"
+                >
+                  <span
+                    class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                    >Mês 02</span
+                  >
+                </div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10 hidden md:block order-1 md:order-2"
+                ></div>
+                <div class="md:w-5/12 text-center md:text-left order-3">
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Copywriting e Persuasão
+                  </h3>
+                  <p class="text-gray-400 text-sm">
+                    Técnicas de escrita para vender mais.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Item 3 -->
+              <div
+                class="relative flex flex-col md:flex-row items-center justify-between gap-8 reveal"
+              >
+                <div
+                  class="md:w-5/12 text-center md:text-right order-2 md:order-1"
+                >
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Tráfego Pago Avançado
+                  </h3>
+                  <p class="text-gray-400 text-sm">
+                    Estratégias de escala em Meta e Google Ads.
+                  </p>
+                </div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10 hidden md:block order-1 md:order-2"
+                ></div>
+                <div class="md:w-5/12 text-center md:text-left order-3">
+                  <span
+                    class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                    >Mês 03</span
+                  >
+                </div>
+              </div>
+
+              <!-- Item 4 -->
+              <div
+                class="relative flex flex-col md:flex-row items-center justify-between gap-8 reveal"
+              >
+                <div
+                  class="md:w-5/12 text-center md:text-right order-2 md:order-1"
+                >
+                  <span
+                    class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                    >Mês 04</span
+                  >
+                </div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10 hidden md:block order-1 md:order-2"
+                ></div>
+                <div class="md:w-5/12 text-center md:text-left order-3">
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Recrutamento e Seleção
+                  </h3>
+                  <p class="text-gray-400 text-sm">
+                    Como contratar os melhores talentos do mercado.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Item 5 -->
+              <div
+                class="relative flex flex-col md:flex-row items-center justify-between gap-8 reveal"
+              >
+                <div
+                  class="md:w-5/12 text-center md:text-right order-2 md:order-1"
+                >
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Gestão de Projetos Ágeis
+                  </h3>
+                  <p class="text-gray-400 text-sm">
+                    Implementando Scrum e Kanban na prática.
+                  </p>
+                </div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10 hidden md:block order-1 md:order-2"
+                ></div>
+                <div class="md:w-5/12 text-center md:text-left order-3">
+                  <span
+                    class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                    >Mês 05</span
+                  >
+                </div>
+              </div>
+
+              <!-- Item 6 -->
+              <div
+                class="relative flex flex-col md:flex-row items-center justify-between gap-8 reveal"
+              >
+                <div
+                  class="md:w-5/12 text-center md:text-right order-2 md:order-1"
+                >
+                  <span
+                    class="text-brand-gold font-bold text-sm tracking-wider uppercase border border-brand-gold/20 px-3 py-1 rounded bg-brand-gold/5"
+                    >Mês 06</span
+                  >
+                </div>
+                <div
+                  class="absolute left-1/2 -translate-x-1/2 w-4 h-4 bg-brand-gold rounded-full shadow-[0_0_10px_rgba(212,175,55,0.5)] z-10 hidden md:block order-1 md:order-2"
+                ></div>
+                <div class="md:w-5/12 text-center md:text-left order-3">
+                  <h3 class="text-xl font-bold text-white mb-2">
+                    Inteligência Emocional
+                  </h3>
+                  <p class="text-gray-400 text-sm">
+                    Liderança sob pressão e tomada de decisão.
+                  </p>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- LIGHTBOX MODAL -->
+      <div
+        id="lightbox"
+        class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden items-center justify-center p-4 md:p-10"
+        onclick="closeLightbox()"
+      >
+        <button
+          class="absolute top-6 right-6 text-white/50 hover:text-brand-gold transition-colors z-[110]"
+          onclick="closeLightbox()"
+        >
+          <i data-lucide="x" class="w-10 h-10"></i>
+        </button>
+        <img
+          id="lightbox-img"
+          src=""
+          alt="Gallery Preview"
+          class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10"
+          onclick="event.stopPropagation()"
+        />
+      </div>
+
+      <!-- EVENTS SLIDER SECTION -->
+      <section
+        class="py-24 bg-brand-dark relative border-t border-white/5 overflow-hidden"
+      >
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-16 reveal">
+            <h2
+              class="text-3xl md:text-5xl font-sans text-white mb-4 font-light leading-tight"
+            >
+              Grandes acontecimentos do <br />
+              <span class="text-brand-gold font-bold">Hub Avançar</span>
+            </h2>
+          </div>
+
+          <!-- Slider Container -->
+          <div
+            class="relative max-w-6xl mx-auto border border-brand-gold/20 rounded-xl bg-[#0F0F0F] p-1 md:p-2 reveal"
+          >
+            <!-- Slides Wrapper -->
+            <div
+              id="events-slider-wrapper"
+              class="relative overflow-hidden rounded-lg min-h-[500px] md:min-h-[400px]"
+            >
+              <!-- Slide 1: Inauguração -->
+              <div
+                class="event-slide absolute inset-0 w-full h-full transition-opacity duration-500 opacity-100 z-10 flex flex-col md:flex-row"
+              >
+                <!-- Media Side -->
+                <div
+                  class="w-full md:w-1/2 h-[300px] md:h-full relative bg-black group cursor-pointer"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1540575467063-178a50c2df87?q=80&w=2070&auto=format&fit=crop"
+                    alt="Inauguração Hub Avançar"
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+                  />
+                  <div
+                    class="absolute inset-0 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-16 h-16 bg-brand-gold/90 rounded-full flex items-center justify-center cursor-pointer group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                    >
+                      <i
+                        data-lucide="play"
+                        class="w-6 h-6 text-brand-darker fill-brand-darker ml-1"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- Text Side -->
+                <div
+                  class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-[#0F0F0F]"
+                >
+                  <h3
+                    class="text-2xl md:text-3xl font-bold text-white mb-2 leading-tight"
+                  >
+                    Inauguração Oficial do <br />
+                    Hub Avançar
+                  </h3>
+                  <p class="text-brand-gold text-xl font-bold mb-6">
+                    Um marco histórico
+                  </p>
+                  <p
+                    class="text-gray-400 text-sm md:text-base leading-relaxed mb-8"
+                  >
+                    Confira como foi a grande noite de inauguração do maior hub
+                    de negócios e inovação do país. Um espaço projetado para
+                    conectar grandes mentes e acelerar resultados.
+                  </p>
+                </div>
+              </div>
+
+              <!-- Slide 2: Outro Evento -->
+              <div
+                class="event-slide absolute inset-0 w-full h-full transition-opacity duration-500 opacity-0 z-0 flex flex-col md:flex-row pointer-events-none"
+              >
+                <!-- Media Side -->
+                <div
+                  class="w-full md:w-1/2 h-[300px] md:h-full relative bg-black group cursor-pointer"
+                >
+                  <img
+                    src="https://images.unsplash.com/photo-1511578314322-379afb476865?q=80&w=2069&auto=format&fit=crop"
+                    alt="Evento Networking"
+                    class="w-full h-full object-cover opacity-80 group-hover:opacity-60 transition-opacity duration-500"
+                  />
+                  <div
+                    class="absolute inset-0 flex items-center justify-center"
+                  >
+                    <div
+                      class="w-16 h-16 bg-brand-gold/90 rounded-full flex items-center justify-center cursor-pointer group-hover:scale-110 transition-transform shadow-[0_0_20px_rgba(212,175,55,0.4)]"
+                    >
+                      <i
+                        data-lucide="play"
+                        class="w-6 h-6 text-brand-darker fill-brand-darker ml-1"
+                      ></i>
+                    </div>
+                  </div>
+                </div>
+                <!-- Text Side -->
+                <div
+                  class="w-full md:w-1/2 p-8 md:p-12 flex flex-col justify-center bg-[#0F0F0F]"
+                >
+                  <h3
+                    class="text-2xl md:text-3xl font-bold text-white mb-2 leading-tight"
+                  >
+                    Imersão de Negócios <br />
+                    Edição Especial
+                  </h3>
+                  <p class="text-brand-gold text-xl font-bold mb-6">
+                    Conexões que geram valor
+                  </p>
+                  <p
+                    class="text-gray-400 text-sm md:text-base leading-relaxed mb-8"
+                  >
+                    Reunimos mais de 200 empresários para um dia intenso de
+                    conteúdo prático, networking qualificado e fechamento de
+                    novos negócios.
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Navigation Buttons (Bottom Left) -->
+            <div
+              class="absolute bottom-4 left-4 md:bottom-8 md:left-8 flex gap-2 z-20"
+            >
+              <button
+                onclick="prevEventSlide()"
+                class="w-10 h-10 border border-white/20 hover:border-brand-gold text-white hover:text-brand-gold flex items-center justify-center transition-all bg-black/50 backdrop-blur-sm"
+              >
+                <i data-lucide="chevron-left" class="w-5 h-5"></i>
+              </button>
+              <button
+                onclick="nextEventSlide()"
+                class="w-10 h-10 border border-white/20 hover:border-brand-gold text-white hover:text-brand-gold flex items-center justify-center transition-all bg-black/50 backdrop-blur-sm"
+              >
+                <i data-lucide="chevron-right" class="w-5 h-5"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- TESTIMONIALS SECTION (REELS) -->
+      <section
+        id="testimonials"
+        class="py-24 bg-black relative overflow-hidden"
+      >
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center mb-16 reveal">
+            <h2
+              class="text-3xl md:text-5xl font-sans text-white leading-[1.2] font-light mb-6"
+            >
+              O que dizem nossos
+              <span class="text-brand-gold font-bold">Membros</span>
+            </h2>
+            <p class="text-gray-400 text-lg max-w-2xl mx-auto">
+              Histórias reais de empresários que transformaram seus negócios
+              através do Clube Avançar.
+            </p>
+          </div>
+
+          <!-- Reels Grid -->
+          <div
+            class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+          >
+            <!-- Video 1 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_cafe_lalau.png"
+              >
+                <source
+                  src="videos/depoimento cafe lalau.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 2 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_gui.png"
+              >
+                <source src="videos/depoimento Gui.mp4" type="video/mp4" />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 3 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_hiped.png"
+              >
+                <source
+                  src="videos/depoimento hiped invest.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 4 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_isaias_pires.png"
+              >
+                <source
+                  src="videos/depoimento isaias pires.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 5 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_leo.png"
+              >
+                <source
+                  src="videos/depoimento leo marião.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 6 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_luis_otavio.png"
+              >
+                <source
+                  src="videos/depoimento Luiz otavio.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 7 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_rogerio_vale.png"
+              >
+                <source
+                  src="videos/Depoimento Rogerio Vale.mp4"
+                  type="video/mp4"
+                />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+            <!-- Video 8 -->
+            <div
+              class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal transition-transform duration-300 hover:-translate-y-2"
+              onclick="toggleVideoPlay(this)"
+            >
+              <video
+                class="w-full h-full object-cover"
+                loop
+                playsinline
+                muted
+                poster="imagens/placeholder_sobre.png"
+              >
+                <source src="videos/sobre a inauguração.mp4" type="video/mp4" />
+              </video>
+              <div
+                class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay"
+              >
+                <i
+                  data-lucide="play-circle"
+                  class="w-16 h-16 text-white opacity-80"
+                ></i>
+              </div>
+              <button
+                class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
+                onclick="toggleVideoMute(event, this)"
+              >
+                <span class="mute-icon block"
+                  ><i data-lucide="volume-x" class="w-5 h-5"></i
+                ></span>
+                <span class="unmute-icon hidden"
+                  ><i data-lucide="volume-2" class="w-5 h-5"></i
+                ></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- CTA Button -->
+          <div class="text-center reveal">
             <button
-              class="w-full md:w-auto bg-[#EAB308] hover:bg-[#CA8A04] text-black font-bold text-lg py-4 px-8 rounded flex items-center justify-center gap-3 transition-all duration-300 hover:scale-105 shadow-lg">
-              Quero fazer parte <i data-lucide="arrow-up-right" class="w-5 h-5"></i>
+              onclick="scrollToSection('pricing')"
+              class="group bg-brand-gold text-brand-darker text-lg font-bold px-8 py-5 rounded-lg shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-300 inline-flex items-center gap-3"
+            >
+              Quero ser membro
+              <i
+                data-lucide="arrow-up-right"
+                class="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"
+              ></i>
             </button>
           </div>
+        </div>
+      </section>
 
-          <div class="w-full lg:w-1/2 pt-0 lg:pt-4 reveal" style="transition-delay: 200ms;">
-            <p class="text-[#EAB308] text-lg mb-6 font-medium md:text-left">O método P.P.R. é a nossa base:</p>
-            <div class="flex flex-col gap-4">
-              <!-- Step 1 -->
-              <div
-                class="accordion-item rounded-lg border bg-[#121212] border-white/10 hover:border-white/20 cursor-pointer overflow-hidden transition-all duration-300"
-                onclick="toggleAccordion(this)">
-                <div class="p-5 flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <i data-lucide="refresh-ccw" class="w-5 h-5 text-gray-400 icon-active"></i>
-                    <span class="text-white text-base md:text-lg font-medium">Processos</span>
-                  </div>
-                  <i data-lucide="chevron-down"
-                    class="w-5 h-5 text-gray-500 transition-transform duration-300 chevron"></i>
-                </div>
-                <div class="accordion-content px-5 pb-0">
-                  <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4 pb-6">Organize a casa. No
-                    Clube, utilizamos ferramentas práticas para estruturar processos que funcionam sozinhos.</p>
-                </div>
-              </div>
-              <!-- Connector -->
-              <div class="flex justify-center">
+      <!-- PRICING SECTION -->
+      <section
+        id="pricing"
+        class="py-24 bg-brand-darker relative overflow-hidden"
+      >
+        <div class="container mx-auto px-6 relative z-10">
+          <div class="text-center max-w-3xl mx-auto mb-20 reveal">
+            <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">
+              Invista no seu <span class="text-brand-gold">Crescimento</span>
+            </h2>
+          </div>
+          <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
+            <!-- Monthly Plan -->
+            <div
+              class="relative flex flex-col h-full p-10 md:p-14 rounded-3xl transition-all duration-300 bg-[#0F0F0F] border border-white/10 hover:border-brand-gold/30 reveal"
+            >
+              <div class="text-center mb-10">
+                <h3 class="text-2xl font-medium text-gray-200 mb-6">
+                  Plano Mensal
+                </h3>
                 <div
-                  class="w-full bg-[#121212] border border-white/5 rounded-lg h-10 md:h-12 flex items-center justify-center">
-                  <i data-lucide="plus" class="w-6 h-6 text-white"></i></div>
-              </div>
-
-              <!-- Step 2 -->
-              <div
-                class="accordion-item rounded-lg border bg-[#121212] border-white/10 hover:border-white/20 cursor-pointer overflow-hidden transition-all duration-300"
-                onclick="toggleAccordion(this)">
-                <div class="p-5 flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <i data-lucide="users" class="w-5 h-5 text-gray-400 icon-active"></i>
-                    <span class="text-white text-base md:text-lg font-medium">Pessoas</span>
+                  class="flex items-center justify-center gap-2 mb-2 relative group"
+                >
+                  <span
+                    class="text-5xl md:text-6xl font-bold tracking-tight text-white"
+                    >R$ 397,00</span
+                  >
+                  <div class="flex flex-col items-start pt-2">
+                    <span class="text-gray-500 text-lg leading-none mb-1"
+                      >/mês</span
+                    >
+                    <button
+                      class="text-gray-500 hover:text-brand-gold transition-colors focus:outline-none lg:pointer-events-none"
+                      onclick="toggleTooltip('tooltip-monthly')"
+                    >
+                      <i data-lucide="info" class="w-5 h-5"></i>
+                    </button>
                   </div>
-                  <i data-lucide="chevron-down"
-                    class="w-5 h-5 text-gray-500 transition-transform duration-300 chevron"></i>
-                </div>
-                <div class="accordion-content px-5 pb-0">
-                  <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4 pb-6">Ninguém cresce
-                    sozinho. Nossos membros têm acesso às melhores práticas de contratação e cultura.</p>
-                </div>
-              </div>
-              <!-- Connector -->
-              <div class="flex justify-center">
-                <div
-                  class="w-full bg-[#121212] border border-white/5 rounded-lg h-10 md:h-12 flex items-center justify-center">
-                  <i data-lucide="equal" class="w-6 h-6 text-white"></i></div>
-              </div>
-
-              <!-- Step 3 -->
-              <div
-                class="accordion-item rounded-lg border bg-[#121212] border-white/10 hover:border-white/20 cursor-pointer overflow-hidden transition-all duration-300"
-                onclick="toggleAccordion(this)">
-                <div class="p-5 flex items-center justify-between">
-                  <div class="flex items-center gap-4">
-                    <i data-lucide="rocket" class="w-5 h-5 text-gray-400 icon-active"></i>
-                    <span class="text-white text-base md:text-lg font-medium">Resultados</span>
+                  <div
+                    id="tooltip-monthly"
+                    class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-4 bg-[#1A1A1A] border border-brand-gold/40 text-gray-200 text-sm rounded-xl shadow-xl z-50 text-center lg:group-hover:visible lg:group-hover:opacity-100"
+                  >
+                    Não é descontado o valor total no cartão de crédito. Cada
+                    mês é cobrado separadamente.
                   </div>
-                  <i data-lucide="chevron-down"
-                    class="w-5 h-5 text-gray-500 transition-transform duration-300 chevron"></i>
-                </div>
-                <div class="accordion-content px-5 pb-0">
-                  <p class="text-gray-400 text-sm leading-relaxed border-t border-white/5 pt-4 pb-6">Escala real. A soma
-                    de processos eficientes e pessoas engajadas gera o lucro líquido.</p>
                 </div>
               </div>
+              <div class="flex-grow">
+                <div class="h-px w-full bg-white/5 mb-8"></div>
+                <ul class="space-y-4 mb-12">
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>2 encontros presenciais por mês</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>1 Workshop presencial por mês</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>Acesso ao co-working e cafeteria</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>Desconto de até 70% em serviços</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>Assessorias, formações e treinamentos</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>Serviços de cuidado e qualidade de vida</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-gray-400 shrink-0"
+                    ></i
+                    ><span>Acesso à Arena, salas e auditório</span>
+                  </li>
+                </ul>
+              </div>
+              <button
+                class="w-full py-5 rounded-xl font-bold text-lg tracking-wide transition-all duration-300 bg-transparent border border-white/20 text-white hover:border-brand-gold hover:text-brand-gold"
+              >
+                Assinar Mensal
+              </button>
             </div>
-          </div>
-        </div>
-      </div>
-    </section>
 
-    <!-- TARGET AUDIENCE SECTION -->
-    <section class="py-24 bg-brand-dark relative border-t border-white/5 overflow-hidden">
-      <div
-        class="absolute top-0 left-1/2 -translate-x-1/2 w-full max-w-3xl h-[500px] bg-brand-gold/5 blur-[100px] rounded-[100%] pointer-events-none -translate-y-1/2">
-      </div>
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="text-center max-w-4xl mx-auto mb-20 reveal">
-          <h2 class="text-3xl md:text-5xl font-sans text-white mb-6 font-light leading-tight">
-            Para quem é o <span class="text-brand-gold font-bold">Clube <br /> Avançar?</span>
-          </h2>
-          <p class="text-gray-300 text-lg leading-relaxed">Exclusivo para donos e donas de empresas que buscam <br />
-            conexões estratégicas e crescimento acelerado.</p>
-        </div>
-        <div class="grid md:grid-cols-2 gap-12 max-w-5xl mx-auto mb-16">
-          <div
-            class="bg-brand-card/30 p-8 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-brand-gold/30 transition-colors duration-500 reveal-left">
-            <h3 class="text-brand-gold text-xl md:text-2xl mb-8 font-medium">O que você busca hoje?</h3>
-            <ul class="space-y-6">
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">Estar em ambientes com
-                  empresários que jogam o mesmo jogo.</span></li>
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">Acesso a estratégias
-                  validadas.</span></li>
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">Sair do operacional.</span></li>
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">Uma rede de apoio.</span></li>
-            </ul>
-          </div>
-          <div
-            class="bg-brand-card/30 p-8 rounded-2xl border border-white/5 backdrop-blur-sm hover:border-brand-gold/30 transition-colors duration-500 reveal-right">
-            <h3 class="text-brand-gold text-xl md:text-2xl mb-8 font-medium">O que você quer eliminar?</h3>
-            <ul class="space-y-6">
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">A solidão do
-                  empreendedor.</span></li>
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">A falta de processos
-                  claros.</span></li>
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">A dependência exclusiva da sua
-                  presença.</span></li>
-              <li class="flex items-start gap-4"><i data-lucide="check-circle-2"
-                  class="w-5 h-5 text-brand-gold flex-shrink-0 mt-1"></i><span
-                  class="text-gray-300 text-sm md:text-base leading-relaxed font-light">A estagnação de
-                  faturamento.</span></li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- SOCIAL PROOF SECTION -->
-    <section class="pt-24 pb-0 bg-brand-darker relative overflow-hidden border-t border-white/5">
-      <!-- Strong Orange/Gold Glow at bottom -->
-      <div
-        class="absolute bottom-[-150px] left-1/2 -translate-x-1/2 w-[800px] md:w-[1000px] h-[400px] bg-brand-gold rounded-[100%] blur-[80px] opacity-30 pointer-events-none z-0">
-      </div>
-
-      <!-- Additional solid arc -->
-      <div
-        class="absolute bottom-[-280px] left-1/2 -translate-x-1/2 w-[600px] h-[600px] bg-brand-gold rounded-full opacity-20 blur-[40px] z-0">
-      </div>
-
-      <div class="container mx-auto px-6 text-center relative z-10">
-        <div class="reveal">
-          <h2 class="text-3xl md:text-5xl font-sans text-white mb-8 font-light leading-tight">
-            Liderado por <span class="text-brand-gold font-bold">Marcus Marques</span>, <br class="hidden md:block" />
-            mentor de mais de 2 milhões de <br class="hidden md:block" />
-            empreendedores nas redes sociais.
-          </h2>
-        </div>
-
-        <div class="reveal" style="transition-delay: 200ms;">
-          <a href="https://www.instagram.com/marcusmarquesmm/" target="_blank" rel="noreferrer"
-            class="inline-flex items-center gap-2 border border-brand-gold text-gray-200 hover:text-brand-darker hover:bg-brand-gold transition-all duration-300 px-8 py-3 rounded text-sm font-bold tracking-wide mb-12 uppercase">
-            Siga @MarcusMarquesMM
-            <i data-lucide="arrow-up-right" class="w-4 h-4"></i>
-          </a>
-        </div>
-
-        <div class="reveal" style="transition-delay: 400ms;">
-          <!-- Phone Mockup Container with negative margin to hide bottom half -->
-          <div class="relative max-w-4xl mx-auto flex justify-center items-end -mb-[300px]">
-            <!-- CSS Phone Mockup -->
+            <!-- Annual Plan -->
             <div
-              class="relative mx-auto border-gray-900 bg-gray-900 border-[12px] rounded-[3rem] h-[650px] w-[320px] shadow-2xl flex flex-col items-center justify-start z-10"
-              style="box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5), inset 0 0 20px rgba(0,0,0,0.8);">
-              <!-- Side Buttons -->
-              <div class="h-[32px] w-[3px] bg-gray-800 absolute -left-[15px] top-[72px] rounded-l-lg"></div>
-              <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[124px] rounded-l-lg"></div>
-              <div class="h-[46px] w-[3px] bg-gray-800 absolute -left-[15px] top-[178px] rounded-l-lg"></div>
-              <div class="h-[64px] w-[3px] bg-gray-800 absolute -right-[15px] top-[142px] rounded-r-lg"></div>
-
-              <!-- Screen -->
+              class="relative flex flex-col h-full p-10 md:p-14 rounded-3xl transition-all duration-300 bg-[#0A0A0A] border-2 border-brand-gold shadow-[0_0_50px_rgba(212,175,55,0.15)] transform md:-translate-y-4 reveal"
+              style="transition-delay: 200ms"
+            >
               <div
-                class="rounded-[2.3rem] overflow-hidden w-full h-full bg-black relative border-[2px] border-gray-800">
-                <!-- Notch -->
+                class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-brand-gold text-black font-bold px-6 py-2 rounded-full text-sm uppercase tracking-wider shadow-lg whitespace-nowrap"
+              >
+                17% OFF
+              </div>
+              <div class="text-center mb-10">
+                <h3 class="text-2xl font-medium text-gray-200 mb-6">
+                  Plano Anual
+                </h3>
                 <div
-                  class="absolute top-0 left-1/2 -translate-x-1/2 w-[100px] h-[25px] bg-black rounded-b-xl z-20 flex justify-center items-center">
-                  <div class="w-16 h-3 bg-gray-900/50 rounded-full"></div>
+                  class="flex items-center justify-center gap-2 mb-2 relative"
+                >
+                  <span
+                    class="text-4xl md:text-5xl font-bold tracking-tight text-brand-gold"
+                    >R$ 3.954,00</span
+                  >
+                  <div class="flex flex-col items-start pt-2">
+                    <span class="text-gray-500 text-lg leading-none mb-1"
+                      >à vista</span
+                    >
+                  </div>
                 </div>
-
-                <!-- IMAGE WRAPPER -->
-                <div class="w-full h-full pt-8 bg-black flex items-start justify-center">
-                  <img
-                    src="imagens/instagram hub.jpg"
-                    alt="Tela do Celular" class="w-full h-auto object-contain" />
-                </div>
-
-                <!-- Screen Glare -->
-                <div class="absolute inset-0 bg-gradient-to-tr from-white/5 to-transparent pointer-events-none"></div>
               </div>
+              <div class="flex-grow">
+                <div class="h-px w-full bg-white/5 mb-8"></div>
+                <ul class="space-y-4 mb-12">
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-brand-gold shrink-0"
+                    ></i
+                    ><span>Todos os benefícios do mensal</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-brand-gold shrink-0"
+                    ></i
+                    ><span>Acesso prioritário aos eventos</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-brand-gold shrink-0"
+                    ></i
+                    ><span>Badge Exclusivo de Membro</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-brand-gold shrink-0"
+                    ></i
+                    ><span>Networking VIP</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-brand-gold shrink-0"
+                    ></i
+                    ><span>Descontos exclusivos em parceiros</span>
+                  </li>
+                  <li
+                    class="flex items-start gap-3 text-gray-300 text-sm md:text-base"
+                  >
+                    <i
+                      data-lucide="check-circle-2"
+                      class="w-5 h-5 text-brand-gold shrink-0"
+                    ></i
+                    ><span>Acesso à Arena, salas e auditório</span>
+                  </li>
+                </ul>
+              </div>
+              <button
+                class="w-full py-5 rounded-xl font-bold text-lg tracking-wide transition-all duration-300 bg-brand-gold text-brand-darker hover:bg-white hover:scale-[1.02]"
+              >
+                Garantir Oferta
+              </button>
             </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
 
-    <!-- ADVISORIES SECTION -->
-    <section class="py-24 bg-brand-dark relative overflow-hidden border-t border-white/5">
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="text-center mb-20 reveal">
-          <span class="text-brand-gold font-bold tracking-widest text-xs uppercase mb-3 block">NÃO CAMINHE
-            SOZINHO</span>
-          <h2 className="text-3xl md:text-5xl font-serif text-white mb-6">Um Conselho de <span
-              class="text-brand-gold">Especialistas</span> <br /> à sua disposição</h2>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          <!-- Advisory Items -->
+      <!-- FOOTER -->
+      <footer
+        class="bg-[#050505] text-gray-400 pt-20 pb-10 border-t border-white/5 font-sans relative overflow-hidden"
+      >
+        <div class="container mx-auto px-6 relative z-10">
           <div
-            class="group bg-[#121212] hover:bg-[#161616] border border-white/5 hover:border-brand-gold/40 p-10 rounded-xl transition-all duration-500 h-full flex flex-col items-start relative overflow-hidden hover:-translate-y-2 shadow-lg reveal">
-            <div
-              class="w-16 h-16 bg-brand-darker border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-brand-gold group-hover:scale-105 transition-all duration-300 relative z-10 shadow-inner">
-              <i data-lucide="trending-up"
-                class="w-7 h-7 text-gray-400 group-hover:text-brand-gold transition-colors duration-300"></i>
+            class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 reveal"
+          >
+            <div>
+              <h4 class="text-brand-gold font-bold text-lg mb-6">
+                Redes sociais
+              </h4>
+              <ul class="space-y-4 text-sm">
+                <li>
+                  <a
+                    href="https://www.instagram.com/hubavancar/"
+                    class="flex items-center gap-3 text-gray-300 hover:text-brand-gold"
+                    ><i data-lucide="instagram" class="w-5 h-5"></i>
+                    @hubavancar</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.youtube.com/@ClubeAltaPerformance"
+                    class="flex items-center gap-3 text-gray-300 hover:text-brand-gold"
+                    ><i data-lucide="youtube" class="w-5 h-5"></i> Clube Alta
+                    Performance</a
+                  >
+                </li>
+                <li>
+                  <a
+                    href="https://www.facebook.com/profile.php?id=61568758134868&mibextid=LQQJ4d&rdid=pQ4fMqMFynGWTUOI&share_url=https%3A%2F%2Fwww.facebook.com%2Fshare%2F1DUtVTC1az%2F%3Fmibextid%3DLQQJ4d"
+                    class="flex items-center gap-3 text-gray-300 hover:text-brand-gold"
+                    ><i data-lucide="facebook" class="w-5 h-5"></i> Clube da
+                    Alta Performance</a
+                  >
+                </li>
+              </ul>
             </div>
+            <div>
+              <h4 class="text-brand-gold font-bold text-lg mb-6">
+                Navegue aqui
+              </h4>
+              <ul class="space-y-4 text-sm font-medium">
+                <li>
+                  <a href="#" class="text-gray-300 hover:text-brand-gold"
+                    >O Clube</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-300 hover:text-brand-gold"
+                    >Benefícios</a
+                  >
+                </li>
+                <li>
+                  <a href="#" class="text-gray-300 hover:text-brand-gold"
+                    >Agenda</a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+          <hr class="border-white/5 mb-16" />
+          <div
+            class="flex flex-col items-center justify-center text-center gap-8 pb-12 reveal"
+          >
             <h3
-              class="text-2xl font-bold text-white mb-4 font-sans tracking-tight group-hover:text-brand-gold transition-colors duration-300">
-              Contábil</h3>
-            <p
-              class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow border-l-2 border-white/5 pl-4 group-hover:border-brand-gold/30 transition-colors duration-300">
-              Gestão fiscal e tributária eficiente.</p>
-          </div>
-          <div
-            class="group bg-[#121212] hover:bg-[#161616] border border-white/5 hover:border-brand-gold/40 p-10 rounded-xl transition-all duration-500 h-full flex flex-col items-start relative overflow-hidden hover:-translate-y-2 shadow-lg reveal"
-            style="transition-delay: 100ms;">
-            <div
-              class="w-16 h-16 bg-brand-darker border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-brand-gold group-hover:scale-105 transition-all duration-300 relative z-10 shadow-inner">
-              <i data-lucide="scale"
-                class="w-7 h-7 text-gray-400 group-hover:text-brand-gold transition-colors duration-300"></i>
-            </div>
-            <h3
-              class="text-2xl font-bold text-white mb-4 font-sans tracking-tight group-hover:text-brand-gold transition-colors duration-300">
-              Jurídico</h3>
-            <p
-              class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow border-l-2 border-white/5 pl-4 group-hover:border-brand-gold/30 transition-colors duration-300">
-              Proteção legal para o seu negócio.</p>
-          </div>
-          <div
-            class="group bg-[#121212] hover:bg-[#161616] border border-white/5 hover:border-brand-gold/40 p-10 rounded-xl transition-all duration-500 h-full flex flex-col items-start relative overflow-hidden hover:-translate-y-2 shadow-lg reveal"
-            style="transition-delay: 200ms;">
-            <div
-              class="w-16 h-16 bg-brand-darker border border-white/10 rounded-lg flex items-center justify-center mb-8 group-hover:border-brand-gold group-hover:scale-105 transition-all duration-300 relative z-10 shadow-inner">
-              <i data-lucide="megaphone"
-                class="w-7 h-7 text-gray-400 group-hover:text-brand-gold transition-colors duration-300"></i>
-            </div>
-            <h3
-              class="text-2xl font-bold text-white mb-4 font-sans tracking-tight group-hover:text-brand-gold transition-colors duration-300">
-              Marketing</h3>
-            <p
-              class="text-gray-400 text-sm leading-relaxed mb-8 flex-grow border-l-2 border-white/5 pl-4 group-hover:border-brand-gold/30 transition-colors duration-300">
-              Estratégias de posicionamento e vendas.</p>
+              class="text-2xl md:text-3xl lg:text-4xl text-white font-medium max-w-4xl leading-tight"
+            >
+              Não caminhe mais sozinho. <br />
+              Conquiste
+              <span class="font-bold text-white">liberdade e lucro</span>.
+            </h3>
+            <button
+              onclick="scrollToSection('pricing')"
+              class="bg-brand-gold text-brand-darker font-bold text-lg px-10 py-4 rounded-lg shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:bg-white hover:scale-105 transition-all duration-300 flex items-center gap-2"
+            >
+              Quero fazer parte do Clube
+              <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
+            </button>
           </div>
         </div>
-      </div>
-    </section>
-
-    <!-- HUB GALLERY SECTION -->
-    <section class="py-24 bg-brand-darker relative border-t border-white/5">
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="text-center mb-16 reveal">
-          <h2 class="text-3xl md:text-5xl font-serif text-white mb-6">Onde Grandes <span
-              class="text-brand-gold">Negócios</span> Acontecem</h2>
-          <p class="text-gray-400 text-lg max-w-2xl mx-auto font-light">Conheça o Hub Avançar. Uma infraestrutura
-            completa de 2.000m².</p>
-        </div>
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div
-            class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
-            onclick="openLightbox('https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop')">
-            <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?q=80&w=2301&auto=format&fit=crop"
-              alt="Coworking"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
-            <div
-              class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div
-                class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <i data-lucide="maximize-2" class="w-6 h-6 text-brand-darker"></i>
-              </div>
-            </div>
-          </div>
-          <div
-            class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
-            style="transition-delay: 100ms;"
-            onclick="openLightbox('https://images.unsplash.com/photo-1505409859467-3a796fd5798e?q=80&w=2070&auto=format&fit=crop')">
-            <img src="https://images.unsplash.com/photo-1505409859467-3a796fd5798e?q=80&w=2070&auto=format&fit=crop"
-              alt="Auditório"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
-            <div
-              class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div
-                class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <i data-lucide="maximize-2" class="w-6 h-6 text-brand-darker"></i>
-              </div>
-            </div>
-          </div>
-          <div
-            class="group relative aspect-[4/3] overflow-hidden rounded-xl cursor-pointer bg-brand-card border border-white/5 hover:border-brand-gold/50 transition-all duration-300 shadow-lg reveal"
-            style="transition-delay: 200ms;"
-            onclick="openLightbox('https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop')">
-            <img src="https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=2070&auto=format&fit=crop"
-              alt="Reuniões"
-              class="w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-80 group-hover:opacity-100" />
-            <div
-              class="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 transition-opacity duration-300 flex items-center justify-center">
-              <div
-                class="bg-brand-gold/90 p-4 rounded-full transform translate-y-4 group-hover:translate-y-0 transition-transform duration-300">
-                <i data-lucide="maximize-2" class="w-6 h-6 text-brand-darker"></i>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- LIGHTBOX MODAL -->
-    <div id="lightbox"
-      class="fixed inset-0 z-[100] bg-black/95 backdrop-blur-xl hidden items-center justify-center p-4 md:p-10"
-      onclick="closeLightbox()">
-      <button class="absolute top-6 right-6 text-white/50 hover:text-brand-gold transition-colors z-[110]"
-        onclick="closeLightbox()">
-        <i data-lucide="x" class="w-10 h-10"></i>
-      </button>
-      <img id="lightbox-img" src="" alt="Gallery Preview"
-        class="max-w-full max-h-[85vh] object-contain rounded-lg shadow-2xl border border-white/10"
-        onclick="event.stopPropagation()" />
+      </footer>
     </div>
 
-    <!-- TESTIMONIALS SECTION (REELS) -->
-    <section id="testimonials" class="py-24 bg-black relative overflow-hidden">
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="text-center mb-16 reveal">
-          <h2 class="text-3xl md:text-5xl font-sans text-white leading-[1.2] font-light mb-6">
-            O que dizem nossos <span class="text-brand-gold font-bold">Membros</span>
-          </h2>
-          <p class="text-gray-400 text-lg max-w-2xl mx-auto">
-            Histórias reais de empresários que transformaram seus negócios através do Clube Avançar.
-          </p>
-        </div>
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+      // Initialize Lucide Icons
+      lucide.createIcons();
 
-        <!-- Reels Grid -->
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-16">
-          <!-- Video 1 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 2 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 3 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 4 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 5 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 6 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 7 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-          <!-- Video 8 -->
-          <div class="relative aspect-[9/16] rounded-2xl overflow-hidden bg-gray-900 group cursor-pointer reveal"
-            onclick="toggleVideoPlay(this)">
-            <video class="w-full h-full object-cover" loop playsinline muted
-              poster="https://images.unsplash.com/photo-1556761175-5973dc0f32e7?q=80&w=400&auto=format&fit=crop">
-              <source src="https://www.w3schools.com/html/mov_bbb.mp4" type="video/mp4">
-            </video>
-            <div
-              class="absolute inset-0 bg-black/40 flex items-center justify-center transition-opacity duration-300 play-overlay">
-              <i data-lucide="play-circle" class="w-16 h-16 text-white opacity-80"></i>
-            </div>
-            <button
-              class="absolute top-4 right-4 bg-black/50 hover:bg-black/80 text-white p-2 rounded-full backdrop-blur-sm transition-colors z-20"
-              onclick="toggleVideoMute(event, this)">
-              <span class="mute-icon block"><i data-lucide="volume-x" class="w-5 h-5"></i></span>
-              <span class="unmute-icon hidden"><i data-lucide="volume-2" class="w-5 h-5"></i></span>
-            </button>
-          </div>
-        </div>
+      // Mobile Menu Toggle
+      const menuBtn = document.getElementById("menu-btn");
+      const mobileMenu = document.getElementById("mobile-menu");
 
-        <!-- CTA Button -->
-        <div class="text-center reveal">
-          <button onclick="scrollToSection('pricing')"
-            class="group bg-brand-gold text-brand-darker text-lg font-bold px-8 py-5 rounded-lg shadow-[0_0_30px_rgba(212,175,55,0.4)] hover:shadow-[0_0_50px_rgba(212,175,55,0.6)] hover:scale-105 transition-all duration-300 inline-flex items-center gap-3">
-            Quero ser membro
-            <i data-lucide="arrow-up-right"
-              class="w-6 h-6 transition-transform group-hover:translate-x-1 group-hover:-translate-y-1"></i>
-          </button>
-        </div>
-      </div>
-    </section>
-
-    <!-- PRICING SECTION -->
-    <section id="pricing" class="py-24 bg-brand-darker relative overflow-hidden">
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="text-center max-w-3xl mx-auto mb-20 reveal">
-          <h2 class="text-4xl md:text-5xl font-serif text-white mb-6">Invista no seu <span
-              class="text-brand-gold">Crescimento</span></h2>
-        </div>
-        <div class="grid lg:grid-cols-2 gap-8 lg:gap-12 max-w-5xl mx-auto">
-          <!-- Monthly Plan -->
-          <div
-            class="relative flex flex-col h-full p-10 md:p-14 rounded-3xl transition-all duration-300 bg-[#0F0F0F] border border-white/10 hover:border-brand-gold/30 reveal">
-            <div class="text-center mb-10">
-              <h3 class="text-2xl font-medium text-gray-200 mb-6">Plano Mensal</h3>
-              <div class="flex items-center justify-center gap-2 mb-2 relative group">
-                <span class="text-5xl md:text-6xl font-bold tracking-tight text-white">R$ 397,00</span>
-                <div class="flex flex-col items-start pt-2">
-                  <span class="text-gray-500 text-lg leading-none mb-1">/mês</span>
-                  <button
-                    class="text-gray-500 hover:text-brand-gold transition-colors focus:outline-none lg:pointer-events-none"
-                    onclick="toggleTooltip('tooltip-monthly')">
-                    <i data-lucide="info" class="w-5 h-5"></i>
-                  </button>
-                </div>
-                <div id="tooltip-monthly"
-                  class="tooltip absolute top-full left-1/2 -translate-x-1/2 mt-2 w-64 p-4 bg-[#1A1A1A] border border-brand-gold/40 text-gray-200 text-sm rounded-xl shadow-xl z-50 text-center lg:group-hover:visible lg:group-hover:opacity-100">
-                  Não é descontado o valor total no cartão de crédito. Cada mês é cobrado separadamente.
-                </div>
-              </div>
-            </div>
-            <div class="flex-grow">
-              <div class="h-px w-full bg-white/5 mb-8"></div>
-              <ul class="space-y-6 mb-12">
-                <li class="flex items-start gap-4 text-gray-300 text-base md:text-lg"><i data-lucide="check-circle-2"
-                    class="w-5 h-5 text-gray-400"></i><span>Acesso a todos os eventos</span></li>
-                <li class="flex items-start gap-4 text-gray-300 text-base md:text-lg"><i data-lucide="check-circle-2"
-                    class="w-5 h-5 text-gray-400"></i><span>Rede de descontos</span></li>
-                <li class="flex items-start gap-4 text-gray-300 text-base md:text-lg"><i data-lucide="check-circle-2"
-                    class="w-5 h-5 text-gray-400"></i><span>Mentorias coletivas</span></li>
-              </ul>
-            </div>
-            <button
-              class="w-full py-5 rounded-xl font-bold text-lg tracking-wide transition-all duration-300 bg-transparent border border-white/20 text-white hover:border-brand-gold hover:text-brand-gold">Assinar
-              Mensal</button>
-          </div>
-
-          <!-- Annual Plan -->
-          <div
-            class="relative flex flex-col h-full p-10 md:p-14 rounded-3xl transition-all duration-300 bg-[#0A0A0A] border-2 border-brand-gold shadow-[0_0_50px_rgba(212,175,55,0.15)] transform md:-translate-y-4 reveal"
-            style="transition-delay: 200ms;">
-            <div
-              class="absolute -top-5 left-1/2 transform -translate-x-1/2 bg-brand-gold text-black font-bold px-6 py-2 rounded-full text-sm uppercase tracking-wider shadow-lg whitespace-nowrap">
-              17% OFF</div>
-            <div class="text-center mb-10">
-              <h3 class="text-2xl font-medium text-gray-200 mb-6">Plano Anual</h3>
-              <div class="flex items-center justify-center gap-2 mb-2 relative">
-                <span class="text-4xl md:text-5xl font-bold tracking-tight text-brand-gold">R$ 3.954,00</span>
-                <div class="flex flex-col items-start pt-2">
-                  <span class="text-gray-500 text-lg leading-none mb-1">à vista</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex-grow">
-              <div class="h-px w-full bg-white/5 mb-8"></div>
-              <ul class="space-y-6 mb-12">
-                <li class="flex items-start gap-4 text-gray-300 text-base md:text-lg"><i data-lucide="check-circle-2"
-                    class="w-5 h-5 text-brand-gold"></i><span>Todos os benefícios do mensal</span></li>
-                <li class="flex items-start gap-4 text-gray-300 text-base md:text-lg"><i data-lucide="check-circle-2"
-                    class="w-5 h-5 text-brand-gold"></i><span>Acesso prioritário</span></li>
-                <li class="flex items-start gap-4 text-gray-300 text-base md:text-lg"><i data-lucide="check-circle-2"
-                    class="w-5 h-5 text-brand-gold"></i><span>Badge Exclusivo de Membro</span></li>
-              </ul>
-            </div>
-            <button
-              class="w-full py-5 rounded-xl font-bold text-lg tracking-wide transition-all duration-300 bg-brand-gold text-brand-darker hover:bg-white hover:scale-[1.02]">Garantir
-              Oferta</button>
-          </div>
-        </div>
-      </div>
-    </section>
-
-    <!-- FOOTER -->
-    <footer class="bg-[#050505] text-gray-400 pt-20 pb-10 border-t border-white/5 font-sans relative overflow-hidden">
-      <div class="container mx-auto px-6 relative z-10">
-        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16 reveal">
-          <div>
-            <h4 class="text-brand-gold font-bold text-lg mb-6">Navegue aqui</h4>
-            <ul class="space-y-4 text-sm font-medium">
-              <li><a href="#" class="text-gray-300 hover:text-brand-gold">O Clube</a></li>
-              <li><a href="#" class="text-gray-300 hover:text-brand-gold">Benefícios</a></li>
-              <li><a href="#" class="text-gray-300 hover:text-brand-gold">Agenda</a></li>
-            </ul>
-          </div>
-          <div>
-            <h4 class="text-brand-gold font-bold text-lg mb-6">Redes sociais</h4>
-            <ul class="space-y-4 text-sm">
-              <li><a href="#" class="flex items-center gap-3 text-gray-300 hover:text-brand-gold"><i
-                    data-lucide="instagram" class="w-5 h-5"></i> @marcusmarquesoficial</a></li>
-              <li><a href="#" class="flex items-center gap-3 text-gray-300 hover:text-brand-gold"><i
-                    data-lucide="youtube" class="w-5 h-5"></i> @MarcusMarquesMM</a></li>
-              <li><a href="#" class="flex items-center gap-3 text-gray-300 hover:text-brand-gold"><i
-                    data-lucide="facebook" class="w-5 h-5"></i> @marcusmarquesoficial</a></li>
-            </ul>
-          </div>
-        </div>
-        <hr class="border-white/5 mb-16" />
-        <div class="flex flex-col items-center justify-center text-center gap-8 pb-12 reveal">
-          <h3 class="text-2xl md:text-3xl lg:text-4xl text-white font-medium max-w-4xl leading-tight">
-            Não caminhe mais sozinho. <br /> Conquiste <span class="font-bold text-white">liberdade e lucro</span>.
-          </h3>
-          <button
-            class="bg-brand-gold text-brand-darker font-bold text-lg px-10 py-4 rounded-lg shadow-[0_0_30px_rgba(212,175,55,0.3)] hover:shadow-[0_0_50px_rgba(212,175,55,0.5)] hover:bg-white hover:scale-105 transition-all duration-300 flex items-center gap-2">
-            Quero fazer parte do Clube <i data-lucide="arrow-up-right" class="w-6 h-6"></i>
-          </button>
-        </div>
-      </div>
-    </footer>
-
-  </div>
-
-  <!-- JAVASCRIPT LOGIC -->
-  <script>
-    // Initialize Lucide Icons
-    lucide.createIcons();
-
-    // Mobile Menu Toggle
-    const menuBtn = document.getElementById('menu-btn');
-    const mobileMenu = document.getElementById('mobile-menu');
-
-    function toggleMenu() {
-      mobileMenu.classList.toggle('hidden');
-      const icon = mobileMenu.classList.contains('hidden') ? 'menu' : 'x';
-      // Re-render icon logic if needed, but simple toggle is fine for now
-    }
-
-    menuBtn.addEventListener('click', toggleMenu);
-
-    // Smooth Scroll
-    function scrollToSection(id) {
-      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
-    }
-
-    // Accordion Logic
-    function toggleAccordion(element) {
-      const content = element.querySelector('.accordion-content');
-      const icon = element.querySelector('.icon-active');
-      const chevron = element.querySelector('.chevron');
-
-      // Close others
-      document.querySelectorAll('.accordion-item').forEach(item => {
-        if (item !== element) {
-          item.classList.remove('bg-[#1a1a1a]', 'border-[#EAB308]/50');
-          item.classList.add('bg-[#121212]', 'border-white/10');
-          item.querySelector('.accordion-content').classList.remove('open');
-          item.querySelector('.icon-active').classList.remove('text-[#EAB308]');
-          item.querySelector('.icon-active').classList.add('text-gray-400');
-          item.querySelector('.chevron').classList.remove('rotate-180', 'text-[#EAB308]');
-        }
-      });
-
-      // Toggle current
-      if (content.classList.contains('open')) {
-        content.classList.remove('open');
-        element.classList.remove('bg-[#1a1a1a]', 'border-[#EAB308]/50');
-        element.classList.add('bg-[#121212]', 'border-white/10');
-        icon.classList.remove('text-[#EAB308]');
-        icon.classList.add('text-gray-400');
-        chevron.classList.remove('rotate-180', 'text-[#EAB308]');
-      } else {
-        content.classList.add('open');
-        element.classList.remove('bg-[#121212]', 'border-white/10');
-        element.classList.add('bg-[#1a1a1a]', 'border-[#EAB308]/50');
-        icon.classList.remove('text-gray-400');
-        icon.classList.add('text-[#EAB308]');
-        chevron.classList.add('rotate-180', 'text-[#EAB308]');
+      function toggleMenu() {
+        mobileMenu.classList.toggle("hidden");
+        const icon = mobileMenu.classList.contains("hidden") ? "menu" : "x";
+        // Re-render icon logic if needed, but simple toggle is fine for now
       }
-    }
 
-    // Lightbox Logic
-    const lightbox = document.getElementById('lightbox');
-    const lightboxImg = document.getElementById('lightbox-img');
+      menuBtn.addEventListener("click", toggleMenu);
 
-    function openLightbox(src) {
-      lightboxImg.src = src;
-      lightbox.classList.remove('hidden');
-      lightbox.classList.add('flex');
-    }
+      // Smooth Scroll
+      function scrollToSection(id) {
+        document.getElementById(id)?.scrollIntoView({ behavior: "smooth" });
+      }
 
-    function closeLightbox() {
-      lightbox.classList.add('hidden');
-      lightbox.classList.remove('flex');
-    }
+      // Accordion Logic
+      function toggleAccordion(element) {
+        const content = element.querySelector(".accordion-content");
+        const icon = element.querySelector(".icon-active");
+        const chevron = element.querySelector(".chevron");
 
-    // Tooltip Logic
-    function toggleTooltip(id) {
-      const tooltip = document.getElementById(id);
-      tooltip.classList.toggle('show');
-      setTimeout(() => {
-        if (tooltip.classList.contains('show')) tooltip.classList.remove('show');
-      }, 3000);
-    }
-
-    // Reveal Animation on Scroll
-    const revealElements = document.querySelectorAll('.reveal, .reveal-left, .reveal-right');
-
-    const revealObserver = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          entry.target.classList.add('active');
-          revealObserver.unobserve(entry.target);
-        }
-      });
-    }, { threshold: 0.1, rootMargin: "0px 0px -50px 0px" });
-
-    revealElements.forEach(el => revealObserver.observe(el));
-
-    // Hero Animation Trigger - Scroll Driven
-    const heroSection = document.getElementById('hero-section');
-    const heroWrapper = document.getElementById('hero-scroll-wrapper');
-
-    function updateHeroScroll() {
-      if (!heroSection || !heroWrapper) return;
-
-      // Only run on desktop
-      if (window.innerWidth < 1024) return;
-
-      const scrollY = window.scrollY;
-      const wrapperTop = heroWrapper.offsetTop;
-      const wrapperHeight = heroWrapper.offsetHeight;
-      const windowHeight = window.innerHeight;
-
-      // The scrollable distance within the wrapper where the sticky element stays fixed
-      // is roughly (wrapperHeight - windowHeight).
-      const scrollDistance = wrapperHeight - windowHeight;
-
-      // Calculate progress relative to the wrapper's scroll range
-      // We start counting when the wrapper hits the top of the viewport (which is 0 initially)
-      let progress = Math.min(Math.max((scrollY - wrapperTop) / scrollDistance, 0), 1);
-
-      // Apply to CSS variable
-      heroSection.style.setProperty('--scroll-prog', progress);
-    }
-
-    window.addEventListener('scroll', () => {
-      requestAnimationFrame(updateHeroScroll);
-    });
-
-    // Initial call
-    updateHeroScroll();
-
-    // Video Testimonials Logic
-    function toggleVideoPlay(container) {
-      const video = container.querySelector('video');
-      const overlay = container.querySelector('.play-overlay');
-
-      if (video.paused) {
-        // Pause all other videos
-        document.querySelectorAll('#testimonials video').forEach(v => {
-          if (v !== video && !v.paused) {
-            v.pause();
-            v.parentElement.querySelector('.play-overlay').style.opacity = '1';
+        // Close others
+        document.querySelectorAll(".accordion-item").forEach((item) => {
+          if (item !== element) {
+            item.classList.remove("bg-[#1a1a1a]", "border-[#EAB308]/50");
+            item.classList.add("bg-[#121212]", "border-white/10");
+            item.querySelector(".accordion-content").classList.remove("open");
+            item
+              .querySelector(".icon-active")
+              .classList.remove("text-[#EAB308]");
+            item.querySelector(".icon-active").classList.add("text-gray-400");
+            item
+              .querySelector(".chevron")
+              .classList.remove("rotate-180", "text-[#EAB308]");
           }
         });
 
-        video.play();
-        overlay.style.opacity = '0';
-      } else {
-        video.pause();
-        overlay.style.opacity = '1';
+        // Toggle current
+        if (content.classList.contains("open")) {
+          content.classList.remove("open");
+          element.classList.remove("bg-[#1a1a1a]", "border-[#EAB308]/50");
+          element.classList.add("bg-[#121212]", "border-white/10");
+          icon.classList.remove("text-[#EAB308]");
+          icon.classList.add("text-gray-400");
+          chevron.classList.remove("rotate-180", "text-[#EAB308]");
+        } else {
+          content.classList.add("open");
+          element.classList.remove("bg-[#121212]", "border-white/10");
+          element.classList.add("bg-[#1a1a1a]", "border-[#EAB308]/50");
+          icon.classList.remove("text-gray-400");
+          icon.classList.add("text-[#EAB308]");
+          chevron.classList.add("rotate-180", "text-[#EAB308]");
+        }
       }
-    }
 
-    function toggleVideoMute(event, btn) {
-      event.stopPropagation(); // Prevent play/pause toggle
-      const video = btn.closest('.relative').querySelector('video');
-      const muteIcon = btn.querySelector('.mute-icon');
-      const unmuteIcon = btn.querySelector('.unmute-icon');
+      // Lightbox Logic
+      const lightbox = document.getElementById("lightbox");
+      const lightboxImg = document.getElementById("lightbox-img");
 
-      video.muted = !video.muted;
-
-      if (video.muted) {
-        muteIcon.classList.remove('hidden');
-        muteIcon.classList.add('block');
-        unmuteIcon.classList.remove('block');
-        unmuteIcon.classList.add('hidden');
-      } else {
-        muteIcon.classList.remove('block');
-        muteIcon.classList.add('hidden');
-        unmuteIcon.classList.remove('hidden');
-        unmuteIcon.classList.add('block');
+      function openLightbox(src) {
+        lightboxImg.src = src;
+        lightbox.classList.remove("hidden");
+        lightbox.classList.add("flex");
       }
-    }
 
-  </script>
-</body>
+      function closeLightbox() {
+        lightbox.classList.add("hidden");
+        lightbox.classList.remove("flex");
+      }
 
+      // Tooltip Logic
+      function toggleTooltip(id) {
+        const tooltip = document.getElementById(id);
+        tooltip.classList.toggle("show");
+        setTimeout(() => {
+          if (tooltip.classList.contains("show"))
+            tooltip.classList.remove("show");
+        }, 3000);
+      }
+
+      // Reveal Animation on Scroll
+      const revealElements = document.querySelectorAll(
+        ".reveal, .reveal-left, .reveal-right",
+      );
+
+      const revealObserver = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("active");
+              revealObserver.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.1, rootMargin: "0px 0px -50px 0px" },
+      );
+
+      revealElements.forEach((el) => revealObserver.observe(el));
+
+      // GSAP Hero Animation
+      document.addEventListener("DOMContentLoaded", (event) => {
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Initial fade-in for title (replacing .reveal class)
+        // REMOVED to ensure title is visible immediately
+        /*
+            gsap.from(".hero-title-wrapper", {
+                opacity: 0,
+                y: 50,
+                duration: 1,
+                ease: "power3.out",
+                delay: 0.2
+            });
+            */
+
+        let mm = gsap.matchMedia();
+
+        mm.add("(min-width: 1024px)", () => {
+          // Initial set to ensure no FOUC
+          // We set width to 0 so the title (which is in a flex container) is centered by justify-center
+          gsap.set(".hero-image-wrapper", {
+            autoAlpha: 0,
+            x: -100,
+            scale: 1.1,
+            width: 0,
+            paddingLeft: 0,
+            flexBasis: 0,
+          });
+
+          // Create timeline
+          let tl = gsap.timeline({
+            scrollTrigger: {
+              trigger: "#hero-section",
+              start: "top top",
+              end: "+=150%", // Pin for 150% of viewport height
+              pin: true,
+              scrub: 1.5, // Smooth scrubbing
+              anticipatePin: 1,
+            },
+          });
+
+          tl.to(
+            ".hero-title-wrapper",
+            {
+              scale: 0.8, // Smaller scale to prevent overflow
+              x: 50, // Move right
+              duration: 1,
+              ease: "power3.out",
+            },
+            0,
+          )
+            .to(
+              ".hero-title-content h1",
+              {
+                fontSize: "4.5rem", // Shrink font size
+                lineHeight: "1.1",
+                marginBottom: "1.5rem",
+                duration: 1,
+                ease: "power3.out",
+              },
+              0,
+            )
+            .to(
+              ".hero-title-content p",
+              {
+                fontSize: "1rem", // Shrink paragraph
+                maxWidth: "28rem", // Reduce max-width
+                marginBottom: "2rem",
+                duration: 1,
+                ease: "power3.out",
+              },
+              0,
+            )
+            .to(
+              ".hero-image-wrapper",
+              {
+                autoAlpha: 1, // Handles opacity and visibility
+                x: 0,
+                scale: 1,
+                width: "50%", // Take up half width
+                flexBasis: "50%",
+                paddingLeft: "2.5rem", // Restore pl-10 (2.5rem)
+                duration: 1,
+                ease: "power3.out",
+              },
+              0,
+            ) // Start at 0 (simultaneous)
+            .to({}, { duration: 0.5 }); // Small pause at the end
+        });
+
+        // Mobile: Simple fade in (optional, or just let CSS handle it)
+        mm.add("(max-width: 1023px)", () => {
+          gsap.set(".hero-image-wrapper", { autoAlpha: 1, x: 0 });
+        });
+      });
+
+      // Video Testimonials Logic
+      function toggleVideoPlay(container) {
+        const video = container.querySelector("video");
+        const overlay = container.querySelector(".play-overlay");
+
+        if (video.paused) {
+          // Pause all other videos
+          document.querySelectorAll("#testimonials video").forEach((v) => {
+            if (v !== video && !v.paused) {
+              v.pause();
+              v.parentElement.querySelector(".play-overlay").style.opacity =
+                "1";
+            }
+          });
+
+          video.play();
+          overlay.style.opacity = "0";
+        } else {
+          video.pause();
+          overlay.style.opacity = "1";
+        }
+      }
+
+      function toggleVideoMute(event, btn) {
+        event.stopPropagation(); // Prevent play/pause toggle
+        const video = btn.closest(".relative").querySelector("video");
+        const muteIcon = btn.querySelector(".mute-icon");
+        const unmuteIcon = btn.querySelector(".unmute-icon");
+
+        video.muted = !video.muted;
+
+        if (video.muted) {
+          muteIcon.classList.remove("hidden");
+          muteIcon.classList.add("block");
+          unmuteIcon.classList.remove("block");
+          unmuteIcon.classList.add("hidden");
+        } else {
+          muteIcon.classList.remove("block");
+          muteIcon.classList.add("hidden");
+          unmuteIcon.classList.remove("hidden");
+          unmuteIcon.classList.add("block");
+        }
+      }
+
+      // Events Slider Logic
+      let currentEventSlide = 0;
+      const eventSlides = document.querySelectorAll(".event-slide");
+      const totalEventSlides = eventSlides.length;
+
+      function updateEventSlider() {
+        eventSlides.forEach((slide, index) => {
+          if (index === currentEventSlide) {
+            slide.classList.remove("opacity-0", "z-0", "pointer-events-none");
+            slide.classList.add("opacity-100", "z-10");
+          } else {
+            slide.classList.remove("opacity-100", "z-10");
+            slide.classList.add("opacity-0", "z-0", "pointer-events-none");
+          }
+        });
+      }
+
+      function nextEventSlide() {
+        currentEventSlide = (currentEventSlide + 1) % totalEventSlides;
+        updateEventSlider();
+      }
+
+      function prevEventSlide() {
+        currentEventSlide =
+          (currentEventSlide - 1 + totalEventSlides) % totalEventSlides;
+        updateEventSlider();
+      }
+
+      // Main Video Toggle Logic
+      function toggleMainVideo(container) {
+        const video = container.querySelector("video");
+        const overlay = container.querySelector(".play-overlay");
+
+        if (video.paused) {
+          video.play();
+          overlay.style.opacity = "0";
+          overlay.style.pointerEvents = "none"; // Allow clicking video to pause
+          video.setAttribute("controls", "controls"); // Show controls when playing
+        } else {
+          video.pause();
+          overlay.style.opacity = "1";
+          overlay.style.pointerEvents = "auto";
+          video.removeAttribute("controls");
+        }
+      }
+    </script>
+  </body>
 </html>
